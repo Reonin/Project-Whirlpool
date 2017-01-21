@@ -165,7 +165,7 @@ var shoot_sound = new Howl({
 //Create The player
 var player = {
     // color: "#00A",
-    sprite: Sprite("spaceship"),
+    sprite: Sprite("Ship_Sprite"),
     x: 600,
     y: 680,
     width: 32,
@@ -513,7 +513,7 @@ function ParallaxScrolling(canvas, imgdata) {
     }
 }
 
-var layer = new Array('images/space-wall.jpg', 'images/wave.gif');
+var layer = new Array('images/Whirlpool_Combined.png', 'images/wave.gif');
 var parallax = new ParallaxScrolling(canvas, layer);
 
 function controller(){
