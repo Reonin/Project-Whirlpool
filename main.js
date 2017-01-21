@@ -1,8 +1,8 @@
 //Generate the Canvas
 var CANVAS_WIDTH = 1920;
 var CANVAS_HEIGHT = 1080;
-var true_centerX = CANVAS_WIDTH/2;
-var true_centerY = 0;//CANVAS_HEIGHT/2;
+var true_centerX = CANVAS_WIDTH / 2 - 450;
+var true_centerY = 0; //CANVAS_HEIGHT/2;
 
 
 //HD Resolutions -1280x720 and 1920 × 1080 Full HD
@@ -52,7 +52,7 @@ window.requestAnimFrame = (function() {
         };
 })();
 //Mouse Coordinate Positioning
- /*function writeMessage(canvas, message) {
+/*function writeMessage(canvas, message) {
         var context = canvasid.getContext('2d');
         context.clearRect(0, 0, canvasid.width, canvasid.height);
         context.font = '18pt Calibri';
@@ -84,17 +84,17 @@ window.requestAnimFrame = (function() {
 function gameloop() {
     controller();
     if (paused == false) {
-    update();
-    draw();
+        update();
+        draw();
 
         //;
     }
-window.requestAnimFrame(gameloop);
+    window.requestAnimFrame(gameloop);
 }
 
 var paused = false;
 
- window.requestAnimFrame(gameloop);
+window.requestAnimFrame(gameloop);
 
 
 //Keyboard Map
@@ -117,6 +117,7 @@ function setUpKeys() {
 setUpKeys();
 
 var notyet = 0;
+
 function clearTimer() {
     notyet = 0;
 }
@@ -127,9 +128,9 @@ function pauseGame() {
         console.log("waiting")
         return;
     }
-     notyet = 1;
-     paused = !paused;
-     setTimeout('clearTimer()', 500);
+    notyet = 1;
+    paused = !paused;
+    setTimeout('clearTimer()', 500);
 }
 
 //console.log(keydown.esc);
@@ -166,7 +167,7 @@ var shoot_sound = new Howl({
 var player = {
     // color: "#00A",
     sprite: Sprite("spaceship"),
-    x: 700,
+    x: 600,
     y: 680,
     width: 32,
     height: 32,
@@ -192,7 +193,7 @@ var player = {
             y: bulletPosition.y
         }))
     },
-    launch: function(){
+    launch: function() {
         var missilePostition = this.midpoint();
         console.log(Missle.width);
         playerMissiles.push(Missle({
@@ -230,71 +231,71 @@ var player = {
 };
 
 
-var whirlpool= {
-  sprite: Sprite("whirlpool"),
-  width: 320,
-  height: 320,
-  x: true_centerX,
-  y: true_centerY,
-  draw: function() {
-      //canvas.fillStyle = this.color;
-      // canvas.fillRect(this.x, this.y, this.width, this.height);
-      this.sprite.draw(canvas, this.x, this.y);
-  },
+var whirlpool = {
+    sprite: Sprite("whirlpool"),
+    width: 320,
+    height: 320,
+    x: true_centerX,
+    y: true_centerY,
+    draw: function() {
+        //canvas.fillStyle = this.color;
+        // canvas.fillRect(this.x, this.y, this.width, this.height);
+        this.sprite.draw(canvas, this.x, this.y);
+    },
 
 }
-var topleftQuad= {
-  sprite: Sprite("450block"),
-  width: 450,
-  height: 450,
-  x: true_centerX,
-  y: true_centerY,
-  draw: function() {
-      //canvas.fillStyle = this.color;
-      // canvas.fillRect(this.x, this.y, this.width, this.height);
-      this.sprite.draw(canvas, this.x, this.y);
-  },
+var topleftQuad = {
+    sprite: Sprite("450block"),
+    width: 450,
+    height: 450,
+    x: true_centerX,
+    y: true_centerY,
+    draw: function() {
+        //canvas.fillStyle = this.color;
+        // canvas.fillRect(this.x, this.y, this.width, this.height);
+        this.sprite.draw(canvas, this.x, this.y);
+    },
 
 }
-var topRightQuad= {
-  sprite: Sprite("450block"),
-  width: 450,
-  height: 450,
-  x: true_centerX + 450,
-  y: true_centerY,
-  draw: function() {
-      //canvas.fillStyle = this.color;
-      // canvas.fillRect(this.x, this.y, this.width, this.height);
-      this.sprite.draw(canvas, this.x, this.y);
-  },
+var topRightQuad = {
+    sprite: Sprite("450block"),
+    width: 450,
+    height: 450,
+    x: true_centerX + 450,
+    y: true_centerY,
+    draw: function() {
+        //canvas.fillStyle = this.color;
+        // canvas.fillRect(this.x, this.y, this.width, this.height);
+        this.sprite.draw(canvas, this.x, this.y);
+    },
 
 
 
 }
-var botleftQuad= {
-  sprite: Sprite("450block"),
-  width: 450,
-  height: 450,
-  x: true_centerX,
-  y: true_centerY + 450,
-  draw: function() {
-      //canvas.fillStyle = this.color;
-      // canvas.fillRect(this.x, this.y, this.width, this.height);
-      this.sprite.draw(canvas, this.x, this.y);
-  },
+var botleftQuad = {
+    sprite: Sprite("450block"),
+    width: 450,
+    height: 450,
+    x: true_centerX,
+    y: true_centerY + 450,
+    draw: function() {
+        //canvas.fillStyle = this.color;
+        // canvas.fillRect(this.x, this.y, this.width, this.height);
+        this.sprite.draw(canvas, this.x, this.y);
+    },
 
 }
-var botRightQuad= {
-  sprite: Sprite("450block"),
-  width: 450,
-  height: 450,
-  x: true_centerX + 450,
-  y: true_centerY + 450,
-  draw: function() {
-      //canvas.fillStyle = this.color;
-      // canvas.fillRect(this.x, this.y, this.width, this.height);
-      this.sprite.draw(canvas, this.x, this.y);
-  },
+var botRightQuad = {
+    sprite: Sprite("450block"),
+    width: 450,
+    height: 450,
+    x: true_centerX + 450,
+    y: true_centerY + 450,
+    draw: function() {
+        //canvas.fillStyle = this.color;
+        // canvas.fillRect(this.x, this.y, this.width, this.height);
+        this.sprite.draw(canvas, this.x, this.y);
+    },
 
 }
 
@@ -309,19 +310,19 @@ function collisionDetection() {
     this.initialize = function() {}
 
 
-    this.hitTest = function( source, target ) {
+    this.hitTest = function(source, target) {
         var hit = false;
         var start = new Date().getTime();
 
-        if( this.boxHitTest( source, target ) ) {
-            if( this.pixelHitTest( source, target ) ) {
+        if (this.boxHitTest(source, target)) {
+            if (this.pixelHitTest(source, target)) {
                 hit = true;
             }
         }
 
         var end = new Date().getTime();
 
-        if( hit == true ){
+        if (hit == true) {
             //console.log( 'detection took: ' + (end - start) + 'ms' );
         }
 
@@ -329,42 +330,39 @@ function collisionDetection() {
     }
 
 
-    this.boxHitTest = function( source, target ) {
+    this.boxHitTest = function(source, target) {
         return !(
-            ( ( source.y + source.height ) < ( target.y ) ) ||
-            ( source.y > ( target.y + target.height ) ) ||
-            ( ( source.x + source.width ) < target.x ) ||
-            ( source.x > ( target.x + target.width ) )
+            ((source.y + source.height) < (target.y)) ||
+            (source.y > (target.y + target.height)) ||
+            ((source.x + source.width) < target.x) ||
+            (source.x > (target.x + target.width))
         );
     }
 
 
-    this.pixelHitTest = function( source, target ) {
+    this.pixelHitTest = function(source, target) {
 
-            var top = parseInt( Math.max( source.y, target.y ) );
-            var bottom = parseInt( Math.min(source.y+source.height, target.y+target.height) );
-            var left = parseInt( Math.max(source.x, target.x) );
-            var right = parseInt( Math.min(source.x+source.width, target.x+target.width) );
+        var top = parseInt(Math.max(source.y, target.y));
+        var bottom = parseInt(Math.min(source.y + source.height, target.y + target.height));
+        var left = parseInt(Math.max(source.x, target.x));
+        var right = parseInt(Math.min(source.x + source.width, target.x + target.width));
 
-            for (var y = top; y < bottom; y++)
-            {
-                for (var x = left; x < right; x++)
-                {
-                    var pixel1 = source.pixelMap.data[ (x - source.x) +"_"+ (y - source.y) ];
-                    var pixel2 = target.pixelMap.data[ (x - target.x) +"_"+ (y - target.y) ];
+        for (var y = top; y < bottom; y++) {
+            for (var x = left; x < right; x++) {
+                var pixel1 = source.pixelMap.data[(x - source.x) + "_" + (y - source.y)];
+                var pixel2 = target.pixelMap.data[(x - target.x) + "_" + (y - target.y)];
 
-                    if( !pixel1 || !pixel2 ) {
-                        continue;
-                    };
+                if (!pixel1 || !pixel2) {
+                    continue;
+                };
 
-                    if (pixel1.pixelData[3] == 255 && pixel2.pixelData[3] == 255)
-                    {
-                        return true;
-                    }
+                if (pixel1.pixelData[3] == 255 && pixel2.pixelData[3] == 255) {
+                    return true;
                 }
             }
+        }
 
-            return false;
+        return false;
     }
 
     /*
@@ -382,18 +380,22 @@ function collisionDetection() {
      * @return object, a pixelMap object
      *
      */
-    this.buildPixelMap = function( source ) {
+    this.buildPixelMap = function(source) {
         var resolution = 1;
         var ctx = source.getContext("2d");
         var pixelMap = [];
 
-        for( var y = 0; y < source.height; y++) {
-            for( var x = 0; x < source.width; x++ ) {
-                var dataRowColOffset = y+"_"+x;//((y * source.width) + x);
-                var pixel = ctx.getImageData(x,y,resolution,resolution);
+        for (var y = 0; y < source.height; y++) {
+            for (var x = 0; x < source.width; x++) {
+                var dataRowColOffset = y + "_" + x; //((y * source.width) + x);
+                var pixel = ctx.getImageData(x, y, resolution, resolution);
                 var pixelData = pixel.data;
 
-                pixelMap[dataRowColOffset] = { x:x, y:y, pixelData: pixelData };
+                pixelMap[dataRowColOffset] = {
+                    x: x,
+                    y: y,
+                    pixelData: pixelData
+                };
 
             }
         }
@@ -408,8 +410,8 @@ function collisionDetection() {
 
     // Return our outward facing interface.
     return {
-        hitTest: this.hitTest.bind( this ),
-        buildPixelMap: this.buildPixelMap.bind( this )
+        hitTest: this.hitTest.bind(this),
+        buildPixelMap: this.buildPixelMap.bind(this)
     };
 };
 var myNewCollission = new collisionDetection();
@@ -420,70 +422,89 @@ function collides(a, b) {
         a.y < b.y + b.height &&
         a.y + a.height > b.y;
 }
-var WaveForce = .02;
-var WavePull = .2;
+var WaveForce = .8;
+var WavePull = .8;
 var yourInthePool = false;
 velocityCap = 3;
 
 function handleCollisions() {
 
-// if(yourInthePool === true){
-//
-//   player.velX = 0;
-//   player.velY = 0;
-//   yourInthePool = false;
-// }
+    // if(yourInthePool === true){
+    //
+    //   player.velX = 0;
+    //   player.velY = 0;
+    //   yourInthePool = false;
+    // }
 
-console.log(player.velX);
+    //console.log(player.velX);
+
+    if (collides(topleftQuad, player)) {
+        //enemy.explode();
+        //  player.lifeChange(-10);
+        //  player.friction = player.friction + .01;
 console.log(player.velY);
-          if (collides(topleftQuad, player)) {
-              //enemy.explode();
-            //  player.lifeChange(-10);
-          //  player.friction = player.friction + .01;
-
         //  player.velX++;
-        if(Math.abs(player.velY) <= velocityCap){
-          player.velX+=WaveForce;
-            player.velY+=WavePull;
-        }else {
-
-          }
+      //  if (Math.abs(player.velY) <= velocityCap) {
+        if(player.velX <  3){
+            player.velX += WaveForce;
         }
-          if (collides(topRightQuad, player)) {
+          else{
+              player.velX = WaveForce;
+          }
+          //  player.y += WavePull;
+        //  debugger;
+      //  }
+    }
+    if (collides(topRightQuad, player)) {
 
 
         //  player.velY++;
-        if(Math.abs(player.velY) <= velocityCap){
-          player.velY+=WaveForce;
-            player.velX-=WavePull;
-        }else{
+      //  if (Math.abs(player.velY) <= velocityCap) {
+      if(player.velY < 3){
 
-        }
+          player.velY += WaveForce ;
+      }
+      else {
+        player.velY = WaveForce ;
+      }
 
-          }
-          if (collides(botRightQuad, player)) {
+
+          //  player.velX -= WavePull;
+      //  }
+
+    }
+    if (collides(botRightQuad, player)) {
 
 
         //  player.velX--;
-        if(Math.abs(player.velY) <= velocityCap){
-          player.velX-=WaveForce;
-            player.velY-=WavePull;
-        }else {
-
+        //if (Math.abs(player.velY) <= velocityCap) {
+        if(  player.velX > 3){
+            player.velX -= WaveForce;
         }
+else {
+      player.velX = -WaveForce;
+}
 
-          }
-          if (collides(botleftQuad, player)) {
+
+          //  player.velY -= WavePull;
+      //  }
+
+    }
+    if (collides(botleftQuad, player)) {
 
 
-//          player.velY--;
-if(Math.abs(player.velY) <= velocityCap){
-  player.velY-=WaveForce;
-    player.velX+=WavePull;
-}else {
+        //          player.velY--;
+    //    if (Math.abs(player.velY) <= velocityCap) {
+    if(player.velY >  3){
+      player.velY -= WaveForce;
+    }
+    else{
+      player.velY = -WaveForce;
+    }
 
-          }
-        }
+          //  player.velX += WavePull;
+      //  }
+    }
 
 }
 
@@ -546,12 +567,12 @@ function ParallaxScrolling(canvas, imgdata) {
 var layer = new Array('images/space-wall.jpg', 'images/wave.gif');
 var parallax = new ParallaxScrolling(canvas, layer);
 
-function controller(){
-     //Pause the game
+function controller() {
+    //Pause the game
     if (keydown.p) {
 
         pauseGame();
-      //  console.log(paused);
+        //  console.log(paused);
 
     }
 
@@ -593,23 +614,23 @@ function update() { //Updates location and reaction of objects to the canvas
 
         //Player Movement Controls
         if (keydown.left) {
-           if (player.velX > -player.speed) {
-              player.angle -= player.turnSpeed;
+            if (player.velX > -player.speed) {
+                player.angle -= player.turnSpeed;
             }
         }
 
         if (keydown.right) {
-           if (player.velX < player.speed) {
-              player.angle += player.turnSpeed;
+            if (player.velX < player.speed) {
+                player.angle += player.turnSpeed;
             }
         }
 
 
         if (keydown.up) {
-          var radians = player.angle/Math.PI*180;
+            var radians = player.angle / Math.PI * 180;
 
-          player.velX = Math.cos(radians) * player.thrust;
-          player.velY = Math.sin(radians) * player.thrust;
+            player.velX = Math.cos(radians) * player.thrust;
+            player.velY = Math.sin(radians) * player.thrust;
         }
 
 
@@ -704,15 +725,15 @@ function draw() { //Draws objects to the canvas
 
         //whirlpool Draw
 
-whirlpool.draw();
-topleftQuad.draw();
-topRightQuad.draw();
-botleftQuad.draw();
-botRightQuad.draw();
-//playerdraw
+        whirlpool.draw();
+        topleftQuad.draw();
+        topRightQuad.draw();
+        botleftQuad.draw();
+        botRightQuad.draw();
+        //playerdraw
         player.draw();
 
-//  console.log(player.y);
+        //  console.log(player.y);
 
         //Life Bar top is pink static background
         canvas.strokeRect(20, 20, 100 * 2, 10);
