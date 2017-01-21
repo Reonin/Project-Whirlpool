@@ -418,7 +418,8 @@ function collides(a, b) {
         a.y < b.y + b.height &&
         a.y + a.height > b.y;
 }
-
+var WaveForce = .9;
+var WavePull = .35;
 function handleCollisions() {
 
 
@@ -429,26 +430,29 @@ function handleCollisions() {
 
         //  player.velX++;
 
-            player.velX+=.95;
-
+            player.velX+=WaveForce;
+              player.velY+=WavePull;
           }
           if (collides(topRightQuad, player)) {
 
 
         //  player.velY++;
-        player.velY+=.95;
+        player.velY+=WaveForce;
+          player.velX-=WavePull;
           }
           if (collides(botRightQuad, player)) {
 
 
         //  player.velX--;
-        player.velX-=.95;
+        player.velX-=WaveForce;
+          player.velY-=WavePull;
           }
           if (collides(botleftQuad, player)) {
 
 
 //          player.velY--;
-            player.velY-=.95;
+            player.velY-=WaveForce;
+              player.velX+=WavePull;
           }
 
 }
@@ -509,7 +513,7 @@ function ParallaxScrolling(canvas, imgdata) {
     }
 }
 
-var layer = new Array('images/space-wall.jpg', 'images/planet.png');
+var layer = new Array('images/space-wall.jpg', 'images/wave.gif');
 var parallax = new ParallaxScrolling(canvas, layer);
 
 function controller(){
