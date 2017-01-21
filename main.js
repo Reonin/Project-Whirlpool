@@ -173,8 +173,10 @@ var player = {
     life: 100,
     velX: 0,
     velY: 0,
+    angle: 0,
+    thrust: 1,
+    turnSpeed: .001,
     speed: 4,
-    friction: 0.90,
     draw: function() {
         //canvas.fillStyle = this.color;
         // canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -564,34 +566,26 @@ function update() { //Updates location and reaction of objects to the canvas
         //Player Movement Controls
         if (keydown.left) {
            if (player.velX > -player.speed) {
-                player.velX--;
+              player.angle -= player.turnSpeed;
             }
         }
 
         if (keydown.right) {
            if (player.velX < player.speed) {
-                player.velX++;
+              player.angle += player.turnSpeed;
             }
         }
+
 
         if (keydown.up) {
-            if (player.velY > -player.speed) {
-                player.velY--;
-            }
+          var radians = player.angle/Math.PI*180;
 
-
+          player.velX = Math.cos(radians) * player.thrust;
+          player.velY = Math.sin(radians) * player.thrust;
         }
+        
 
-        if (keydown.down) {
-            if (player.velY < player.speed) {
-                player.velY++;
-            }
-
-        }
-
-        player.velX *= player.friction;
         player.x += player.velX;
-        player.velY *= player.friction;
         player.y += player.velY;
 
         player.x = player.x.clamp(0, CANVAS_WIDTH - player.width); //prevents character from going past canvas
