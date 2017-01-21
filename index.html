@@ -40,7 +40,7 @@
     display: block;
 
 	}
- 
+
 
 	</style>
 <script>
@@ -70,7 +70,7 @@ $(window).on('resize', function() {
 });
 //Draw tile map
 drawMap(canvas);
-// Game State 
+// Game State
 
 
 var states = {
@@ -94,7 +94,7 @@ window.requestAnimFrame = (function() {
         };
 })();
 //Mouse Coordinate Positioning
- function writeMessage(canvas, message) {
+ /*function writeMessage(canvas, message) {
         var context = canvasid.getContext('2d');
         context.clearRect(0, 0, canvasid.width, canvasid.height);
         context.font = '18pt Calibri';
@@ -102,8 +102,9 @@ window.requestAnimFrame = (function() {
         context.fillText(message, 10, 25);
         console.log(message);
       }
+			**/
 
-function getMousePos(canvas, evt) {
+/** function getMousePos(canvas, evt) {
         var rect = canvasid.getBoundingClientRect();
         return {
           x: evt.clientX - rect.left,
@@ -118,7 +119,7 @@ function getMousePos(canvas, evt) {
          mousePos = getMousePos(canvasid, evt);
         var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
         writeMessage(canvas, message);
-      }, false);
+      }, false); **/
 
 
 
@@ -127,7 +128,7 @@ function gameloop() {
     if (paused == false) {
     update();
     draw();
-   
+
         //;
     }
 window.requestAnimFrame(gameloop);
@@ -157,17 +158,17 @@ function setUpKeys() {
 };
 setUpKeys();
 
-var notyet = 0;    
+var notyet = 0;
 function clearTimer() {
-    notyet = 0;   
-}  
+    notyet = 0;
+}
 
 
 function pauseGame() {
     if (notyet == 1) {
         console.log("waiting")
-        return; 
-    }  
+        return;
+    }
      notyet = 1;
      paused = !paused;
      setTimeout('clearTimer()', 500);
@@ -269,131 +270,9 @@ var player = {
 };
 
 
-var playerBullets = [];
-
-function Bullet(I) {
-    I.active = true;
-
-    I.xVelocity = 0;
-    I.yVelocity = -I.speed;
-    I.width = 3;
-    I.height = 3;
-    I.color = "#000";
-
-    I.inBounds = function() {
-        return I.x >= 0 && I.x <= CANVAS_WIDTH &&
-            I.y >= 0 && I.y <= CANVAS_HEIGHT;
-    };
-
-    I.draw = function() {
-        canvas.fillStyle = this.color;
-        canvas.fillRect(this.x, this.y, this.width, this.height);
-    };
-
-    I.update = function() {
-        I.x += I.xVelocity;
-        I.y += I.yVelocity;
-
-        I.active = I.active && I.inBounds();
-    };
-
-    return I;
-}
-
-var playerMissiles = [];
-
-function Missle(I) {
-    I.active = true;
-
-    I.xVelocity = 0;
-    I.mousePosX = mousePos.x;
-    I.mousePosY = mousePos.y;
-    I.yVelocity = -I.speed;
-    I.width = 1002;
-    I.height = 32;
-    I.color = "#34DDDD";
-
-    I.inBounds = function() {
-        return I.x >= 0 && I.x <= CANVAS_WIDTH &&
-            I.y >= 0 && I.y <= CANVAS_HEIGHT;
-    };
-
-    I.draw = function() {
-        canvas.fillStyle = this.color;
-        canvas.fillRect(this.x, this.y, this.width, this.height);
-    };
-
-    I.update = function() {
-        I.x += I.mousePosX;
-        I.y += I.mousePosY + I.yVelocity;
-
-        I.active = I.active && I.inBounds();
-    };
-
-    return I;
-}
-
-var enemies = [];
-
-function Enemy(I) {
-    I = I || {};
-
-    I.active = true;
-    I.age = Math.floor(Math.random() * 128);
-
-    I.sprite = Sprite("enemy");
-    // I.color = "#A2B";
-
-    I.x = CANVAS_WIDTH / 4 + Math.random() * CANVAS_WIDTH / 2;
-    I.y = 0;
-    I.xVelocity = 0
-    I.yVelocity = 2;
-
-    I.width = 32;
-    I.height = 32;
-
-    I.inBounds = function() {
-        return I.x >= 0 && I.x <= CANVAS_WIDTH &&
-            I.y >= 0 && I.y <= CANVAS_HEIGHT;
-    };
-
-    I.draw = function() {
-        //canvas.fillStyle = this.color;
-        //canvas.fillRect(this.x, this.y, this.width, this.height);
-        this.sprite.draw(canvas, this.x, this.y);
-    };
-
-    I.explode = function() {
-        this.active = false;
-        explosion_sound.play();
-        // Extra Credit: Add an explosion graphic
-    };
-
-    I.update = function() {
-        I.x += I.xVelocity;
-        I.y += I.yVelocity;
-
-        I.xVelocity = 3 * Math.sin(I.age * Math.PI / 64);
-
-        I.age++;
-
-        I.active = I.active && I.inBounds();
-    };
-
-    return I;
-};
-
-//Collision Detection
-function collides(a, b) {
-    return a.x < b.x + b.width &&
-        a.x + a.width > b.x &&
-        a.y < b.y + b.height &&
-        a.y + a.height > b.y;
-}
-
 
 function collisionDetection() {
- 
+
     /*
      * private function initialize()
      *
@@ -401,7 +280,7 @@ function collisionDetection() {
      *
      */
     this.initialize = function() {}
- 
+
     /*
      * public function hitTest()
      *
@@ -427,22 +306,22 @@ function collisionDetection() {
     this.hitTest = function( source, target ) {
         var hit = false;
         var start = new Date().getTime();
- 
+
         if( this.boxHitTest( source, target ) ) {
             if( this.pixelHitTest( source, target ) ) {
                 hit = true;
             }
         }
- 
+
         var end = new Date().getTime();
- 
+
         if( hit == true ){
             //console.log( 'detection took: ' + (end - start) + 'ms' );
         }
- 
+
         return hit;
     }
- 
+
     /*
      * private function boxHitTest()
      *
@@ -464,14 +343,14 @@ function collisionDetection() {
      *
      */
     this.boxHitTest = function( source, target ) {
-        return !( 
+        return !(
             ( ( source.y + source.height ) < ( target.y ) ) ||
             ( source.y > ( target.y + target.height ) ) ||
             ( ( source.x + source.width ) < target.x ) ||
-            ( source.x > ( target.x + target.width ) ) 
+            ( source.x > ( target.x + target.width ) )
         );
     }
- 
+
     /*
      * private function pixelHitTest()
      *
@@ -495,33 +374,33 @@ function collisionDetection() {
      *
      */
     this.pixelHitTest = function( source, target ) {
- 
+
             var top = parseInt( Math.max( source.y, target.y ) );
             var bottom = parseInt( Math.min(source.y+source.height, target.y+target.height) );
             var left = parseInt( Math.max(source.x, target.x) );
             var right = parseInt( Math.min(source.x+source.width, target.x+target.width) );
- 
+
             for (var y = top; y < bottom; y++)
             {
                 for (var x = left; x < right; x++)
                 {
                     var pixel1 = source.pixelMap.data[ (x - source.x) +"_"+ (y - source.y) ];
                     var pixel2 = target.pixelMap.data[ (x - target.x) +"_"+ (y - target.y) ];
- 
+
                     if( !pixel1 || !pixel2 ) {
                         continue;
                     };
-                    
+
                     if (pixel1.pixelData[3] == 255 && pixel2.pixelData[3] == 255)
                     {
                         return true;
                     }
                 }
             }
- 
+
             return false;
     }
- 
+
     /*
      * public function buildPixelMap()
      *
@@ -541,15 +420,15 @@ function collisionDetection() {
         var resolution = 1;
         var ctx = source.getContext("2d");
         var pixelMap = [];
- 
+
         for( var y = 0; y < source.height; y++) {
             for( var x = 0; x < source.width; x++ ) {
                 var dataRowColOffset = y+"_"+x;//((y * source.width) + x);
                 var pixel = ctx.getImageData(x,y,resolution,resolution);
                 var pixelData = pixel.data;
- 
+
                 pixelMap[dataRowColOffset] = { x:x, y:y, pixelData: pixelData };
- 
+
             }
         }
         return {
@@ -557,10 +436,10 @@ function collisionDetection() {
             resolution: resolution
         };
     }
- 
+
     // Initialize the collider
     this.initialize();
- 
+
     // Return our outward facing interface.
     return {
         hitTest: this.hitTest.bind( this ),
@@ -569,37 +448,16 @@ function collisionDetection() {
 };
 var myNewCollission = new collisionDetection();
 function handleCollisions() {
-    playerBullets.forEach(function(bullet) {
-        enemies.forEach(function(enemy) {
-            if (collides(bullet, enemy)) {
-                enemy.explode();
-                bullet.active = false;
-            }
-        });
-    });
 
 
-    playerMissiles.forEach(function(missle) {
-        enemies.forEach(function(enemy) {
-            if (collides(missle, enemy)) {
-                enemy.explode();
-                missle.active = false;
-            }
-        });
-    });
 
-    enemies.forEach(function(enemy) {
-        if (collides(enemy, player)) {
-            enemy.explode();
-            player.lifeChange(-10);
-        }
-    });
+
 }
 
 /*** Parrallax background tutorial http://javacoffee.de/?p=866 **/
 //Parallax background
 
-/** 
+/**
  * Data structure to hold layer data
  * @param s <string> Absolute path to the image
  * @param x <int> X coordinate
@@ -718,7 +576,7 @@ function update() { //Updates location and reaction of objects to the canvas
                 player.velY--;
             }
 
-           
+
         }
 
         if (keydown.down) {
@@ -735,50 +593,15 @@ function update() { //Updates location and reaction of objects to the canvas
 
         player.x = player.x.clamp(0, CANVAS_WIDTH - player.width); //prevents character from going past canvas
 
-    
+
         player.y = player.y.clamp(0, CANVAS_HEIGHT - player.height); //prevents character from going past canvas
 
 
         //Player actions
-        if (keydown.space) {
-            player.shoot();
-        }
-
-        
-        playerBullets.forEach(function(bullet) {
-            bullet.update();
-        });
-
-        playerBullets = playerBullets.filter(function(bullet) {
-            return bullet.active;
-        });
-
-
-        if (keydown.v) {
-            player.launch();
-        }
-
-        playerMissiles.forEach(function(missle) {
-            missle.update();
-        });
-
-        playerMissiles = playerMissiles.filter(function(missle) {
-            return missle.active;
-        });
 
 
         //Enemy Update logic
-        enemies.forEach(function(enemy) {
-            enemy.update();
-        });
 
-        enemies = enemies.filter(function(enemy) {
-            return enemy.active;
-        });
-
-        if (Math.random() < 0.1) {
-            enemies.push(Enemy());
-        }
 
         //Handle Collision
         handleCollisions();
@@ -852,23 +675,9 @@ function draw() { //Draws objects to the canvas
         parallax.Draw(); //draw background
         player.draw();
 
-        tileArray.forEach(function(tile) {
-            tile.draw();
-        });
 
-        playerBullets.forEach(function(bullet) {
-            bullet.draw();
-        });
-
-
-        playerMissiles.forEach(function(missle) {
-            missle.draw();
-        });
 
         //Enemy Draw
-        enemies.forEach(function(enemy) {
-            enemy.draw();
-        });
 
 
         //Life Bar top is pink static background
