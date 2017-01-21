@@ -241,6 +241,61 @@ var whirlpool= {
   },
 
 }
+var topleftQuad= {
+  sprite: Sprite("Rblock"),
+  width: 160,
+  height: 160,
+  x: true_centerX,
+  y: true_centerY,
+  draw: function() {
+      //canvas.fillStyle = this.color;
+      // canvas.fillRect(this.x, this.y, this.width, this.height);
+      this.sprite.draw(canvas, this.x, this.y);
+  },
+
+}
+var topRightQuad= {
+  sprite: Sprite("Rblock"),
+  width: 160,
+  height: 160,
+  x: true_centerX + 160,
+  y: true_centerY,
+  draw: function() {
+      //canvas.fillStyle = this.color;
+      // canvas.fillRect(this.x, this.y, this.width, this.height);
+      this.sprite.draw(canvas, this.x, this.y);
+  },
+
+
+
+}
+var botleftQuad= {
+  sprite: Sprite("Rblock"),
+  width: 160,
+  height: 160,
+  x: true_centerX,
+  y: true_centerY + 160,
+  draw: function() {
+      //canvas.fillStyle = this.color;
+      // canvas.fillRect(this.x, this.y, this.width, this.height);
+      this.sprite.draw(canvas, this.x, this.y);
+  },
+
+}
+var botRightQuad= {
+  sprite: Sprite("Rblock"),
+  width: 160,
+  height: 160,
+  x: true_centerX + 160,
+  y: true_centerY + 160,
+  draw: function() {
+      //canvas.fillStyle = this.color;
+      // canvas.fillRect(this.x, this.y, this.width, this.height);
+      this.sprite.draw(canvas, this.x, this.y);
+  },
+
+}
+
 function collisionDetection() {
 
     /*
@@ -251,28 +306,7 @@ function collisionDetection() {
      */
     this.initialize = function() {}
 
-    /*
-     * public function hitTest()
-     *
-     * Checks if two objects collide. First with box-model detection
-     * and then on a per-pixel detection.
-     *
-     * Both source and target objects are expected to look like this:
-     *
-     * {
-     *    x: (Number) current x position,
-     *    y: (Number) current y position,
-     *    width: (Number) object height,
-     *    height: (Number) object width,
-     *    pixelmap: (Object) pixel map object generated from buildPixelMap()
-     * }
-     *
-     * @param source (Object) The source object
-     * @param target (Object) The target object
-     *
-     * @return boolean, true on collision
-     *
-     */
+
     this.hitTest = function( source, target ) {
         var hit = false;
         var start = new Date().getTime();
@@ -292,26 +326,7 @@ function collisionDetection() {
         return hit;
     }
 
-    /*
-     * private function boxHitTest()
-     *
-     * Checks if two objects collide with box-model detection.
-     *
-     * Both source and target objects are expected to look like this:
-     *
-     * {
-     *    x: (Number) current x position,
-     *    y: (Number) current y position,
-     *    width: (Number) object height,
-     *    height: (Number) object width
-     * }
-     *
-     * @param source (Object) The source object
-     * @param target (Object) The target object
-     *
-     * @return boolean, true on collision
-     *
-     */
+
     this.boxHitTest = function( source, target ) {
         return !(
             ( ( source.y + source.height ) < ( target.y ) ) ||
@@ -321,28 +336,7 @@ function collisionDetection() {
         );
     }
 
-    /*
-     * private function pixelHitTest()
-     *
-     * Checks if two objects collide on a per-pixel detection.
-     *
-     * Both source and target objects are expected to look like this:
-     *
-     * {
-     *    x: (Number) current x position,
-     *    y: (Number) current y position,
-     *    width: (Number) object height,
-     *    height: (Number) object width,
-     *    height: (Number) object width,
-     *    pixelmap: (Object) pixel map object generated from buildPixelMap()
-     * }
-     *
-     * @param source (Object) The source object
-     * @param target (Object) The target object
-     *
-     * @return boolean, true on collision
-     *
-     */
+
     this.pixelHitTest = function( source, target ) {
 
             var top = parseInt( Math.max( source.y, target.y ) );
@@ -428,18 +422,30 @@ function collides(a, b) {
 function handleCollisions() {
 
 
-          if (collides(whirlpool, player)) {
+          if (collides(topleftQuad, player)) {
               //enemy.explode();
             //  player.lifeChange(-10);
           //  player.friction = player.friction + .01;
 
-          player.velX--;
-          player.velY--;
-
+          player.velX++;
+          
 
           }
+          if (collides(topRightQuad, player)) {
 
 
+          player.velY++;
+          }
+          if (collides(botRightQuad, player)) {
+
+
+          player.velX--;
+          }
+          if (collides(botleftQuad, player)) {
+
+
+          player.velY--;
+          }
 
 }
 
@@ -669,12 +675,14 @@ function draw() { //Draws objects to the canvas
         //whirlpool Draw
 
 whirlpool.draw();
-
-
+topleftQuad.draw();
+topRightQuad.draw();
+botleftQuad.draw();
+botRightQuad.draw();
 //playerdraw
         player.draw();
 
-
+  console.log(player.y);
 
         //Life Bar top is pink static background
         canvas.strokeRect(20, 20, 100 * 2, 10);
