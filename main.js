@@ -2,7 +2,7 @@
 var CANVAS_WIDTH = 1920;
 var CANVAS_HEIGHT = 1080;
 var true_centerX = CANVAS_WIDTH/2;
-var true_centerY = CANVAS_HEIGHT/2;
+var true_centerY = 0;//CANVAS_HEIGHT/2;
 
 
 //HD Resolutions -1280x720 and 1920 × 1080 Full HD
@@ -165,8 +165,8 @@ var shoot_sound = new Howl({
 //Create The player
 var player = {
     // color: "#00A",
-    sprite: Sprite("Ship_Sprite"),
-    x: 600,
+    sprite: Sprite("spaceship"),
+    x: 700,
     y: 680,
     width: 32,
     height: 32,
@@ -244,9 +244,9 @@ var whirlpool= {
 
 }
 var topleftQuad= {
-  sprite: Sprite("Rblock"),
-  width: 160,
-  height: 160,
+  sprite: Sprite("450block"),
+  width: 450,
+  height: 450,
   x: true_centerX,
   y: true_centerY,
   draw: function() {
@@ -257,10 +257,10 @@ var topleftQuad= {
 
 }
 var topRightQuad= {
-  sprite: Sprite("Rblock"),
-  width: 160,
-  height: 160,
-  x: true_centerX + 160,
+  sprite: Sprite("450block"),
+  width: 450,
+  height: 450,
+  x: true_centerX + 450,
   y: true_centerY,
   draw: function() {
       //canvas.fillStyle = this.color;
@@ -272,11 +272,11 @@ var topRightQuad= {
 
 }
 var botleftQuad= {
-  sprite: Sprite("Rblock"),
-  width: 160,
-  height: 160,
+  sprite: Sprite("450block"),
+  width: 450,
+  height: 450,
   x: true_centerX,
-  y: true_centerY + 160,
+  y: true_centerY + 450,
   draw: function() {
       //canvas.fillStyle = this.color;
       // canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -285,11 +285,11 @@ var botleftQuad= {
 
 }
 var botRightQuad= {
-  sprite: Sprite("Rblock"),
-  width: 160,
-  height: 160,
-  x: true_centerX + 160,
-  y: true_centerY + 160,
+  sprite: Sprite("450block"),
+  width: 450,
+  height: 450,
+  x: true_centerX + 450,
+  y: true_centerY + 450,
   draw: function() {
       //canvas.fillStyle = this.color;
       // canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -420,42 +420,70 @@ function collides(a, b) {
         a.y < b.y + b.height &&
         a.y + a.height > b.y;
 }
-var WaveForce = .9;
-var WavePull = .35;
+var WaveForce = .02;
+var WavePull = .2;
+var yourInthePool = false;
+velocityCap = 3;
+
 function handleCollisions() {
 
+// if(yourInthePool === true){
+//
+//   player.velX = 0;
+//   player.velY = 0;
+//   yourInthePool = false;
+// }
 
+console.log(player.velX);
+console.log(player.velY);
           if (collides(topleftQuad, player)) {
               //enemy.explode();
             //  player.lifeChange(-10);
           //  player.friction = player.friction + .01;
 
         //  player.velX++;
+        if(Math.abs(player.velY) <= velocityCap){
+          player.velX+=WaveForce;
+            player.velY+=WavePull;
+        }else {
 
-            player.velX+=WaveForce;
-              player.velY+=WavePull;
           }
+        }
           if (collides(topRightQuad, player)) {
 
 
         //  player.velY++;
-        player.velY+=WaveForce;
-          player.velX-=WavePull;
+        if(Math.abs(player.velY) <= velocityCap){
+          player.velY+=WaveForce;
+            player.velX-=WavePull;
+        }else{
+
+        }
+
           }
           if (collides(botRightQuad, player)) {
 
 
         //  player.velX--;
-        player.velX-=WaveForce;
-          player.velY-=WavePull;
+        if(Math.abs(player.velY) <= velocityCap){
+          player.velX-=WaveForce;
+            player.velY-=WavePull;
+        }else {
+
+        }
+
           }
           if (collides(botleftQuad, player)) {
 
 
 //          player.velY--;
-            player.velY-=WaveForce;
-              player.velX+=WavePull;
+if(Math.abs(player.velY) <= velocityCap){
+  player.velY-=WaveForce;
+    player.velX+=WavePull;
+}else {
+
           }
+        }
 
 }
 
@@ -515,7 +543,7 @@ function ParallaxScrolling(canvas, imgdata) {
     }
 }
 
-var layer = new Array('images/Whirlpool_Combined.png', 'images/wave.gif');
+var layer = new Array('images/space-wall.jpg', 'images/wave.gif');
 var parallax = new ParallaxScrolling(canvas, layer);
 
 function controller(){
@@ -583,7 +611,7 @@ function update() { //Updates location and reaction of objects to the canvas
           player.velX = Math.cos(radians) * player.thrust;
           player.velY = Math.sin(radians) * player.thrust;
         }
-        
+
 
         player.x += player.velX;
         player.y += player.velY;
