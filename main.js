@@ -1,6 +1,10 @@
 //Generate the Canvas
 var CANVAS_WIDTH = 1920;
 var CANVAS_HEIGHT = 1080;
+var true_centerX = CANVAS_WIDTH/2;
+var true_centerY = CANVAS_HEIGHT/2;
+
+
 //HD Resolutions -1280x720 and 1920 × 1080 Full HD
 
 var canvasElement = $("<canvas id ='GameCanvasScreen' width='" + CANVAS_WIDTH + "' height='" + CANVAS_HEIGHT + "'></canvas>");
@@ -33,7 +37,7 @@ var states = {
     Game: 2,
     End: 3
 };
-var currentState = states.title;
+var currentState = states.Game;
 
 //Game Loop
 //var FPS = 60;
@@ -224,7 +228,19 @@ var player = {
 };
 
 
+var whirlpool= {
+  sprite: Sprite("whirlpool"),
+  width: 320,
+  height: 320,
+  x: true_centerX,
+  y: true_centerY,
+  draw: function() {
+      //canvas.fillStyle = this.color;
+      // canvas.fillRect(this.x, this.y, this.width, this.height);
+      this.sprite.draw(canvas, this.x, this.y);
+  },
 
+}
 function collisionDetection() {
 
     /*
@@ -627,11 +643,18 @@ function draw() { //Draws objects to the canvas
 
     if (currentState === states.Game) {
         parallax.Draw(); //draw background
+
+
+
+
+        //whirlpool Draw
+
+whirlpool.draw();
+
+
+//playerdraw
         player.draw();
 
-
-
-        //Enemy Draw
 
 
         //Life Bar top is pink static background
