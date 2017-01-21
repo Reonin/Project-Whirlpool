@@ -417,8 +417,27 @@ function collisionDetection() {
     };
 };
 var myNewCollission = new collisionDetection();
+//Collision Detection
+function collides(a, b) {
+    return a.x < b.x + b.width &&
+        a.x + a.width > b.x &&
+        a.y < b.y + b.height &&
+        a.y + a.height > b.y;
+}
+
 function handleCollisions() {
 
+
+          if (collides(whirlpool, player)) {
+              //enemy.explode();
+            //  player.lifeChange(-10);
+          //  player.friction = player.friction + .01;
+
+          player.velX--;
+          player.velY--;
+
+
+          }
 
 
 
