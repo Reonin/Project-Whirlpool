@@ -166,7 +166,7 @@ var shoot_sound = new Howl({
 var player = {
     // color: "#00A",
     sprite: Sprite("spaceship"),
-    x: 220,
+    x: 600,
     y: 680,
     width: 32,
     height: 32,
@@ -174,7 +174,7 @@ var player = {
     velX: 0,
     velY: 0,
     speed: 4,
-    friction: 0.85,
+    friction: 0.90,
     draw: function() {
         //canvas.fillStyle = this.color;
         // canvas.fillRect(this.x, this.y, this.width, this.height);
@@ -427,24 +427,28 @@ function handleCollisions() {
             //  player.lifeChange(-10);
           //  player.friction = player.friction + .01;
 
-          player.velX++;
-          
+        //  player.velX++;
+
+            player.velX+=.95;
 
           }
           if (collides(topRightQuad, player)) {
 
 
-          player.velY++;
+        //  player.velY++;
+        player.velY+=.95;
           }
           if (collides(botRightQuad, player)) {
 
 
-          player.velX--;
+        //  player.velX--;
+        player.velX-=.95;
           }
           if (collides(botleftQuad, player)) {
 
 
-          player.velY--;
+//          player.velY--;
+            player.velY-=.95;
           }
 
 }
@@ -513,7 +517,7 @@ function controller(){
     if (keydown.p) {
 
         pauseGame();
-        console.log(paused);
+      //  console.log(paused);
 
     }
 
@@ -682,7 +686,7 @@ botRightQuad.draw();
 //playerdraw
         player.draw();
 
-  console.log(player.y);
+//  console.log(player.y);
 
         //Life Bar top is pink static background
         canvas.strokeRect(20, 20, 100 * 2, 10);
