@@ -879,18 +879,12 @@ function draw() { //Draws objects to the canvas
         //  console.log(player.y);
 
         //Life Bar top is pink static background
-        canvas.strokeRect(20, 20, 100 * 2, 10);
         canvas.fillStyle = "#8B8989";
-        canvas.fillRect(20, 20, 100 * 2, 10);
+        canvas.fillRect(20, 20, 200, 10);
 
         //Second bar is red dynamic one
-        canvas.strokeRect(20, 20, 100 * 2, 10);
-        canvas.fillStyle = "#F00";
-        canvas.fillRect(20, 20, player.life * 2, 10);
-
-
-
-
+        canvas.fillStyle = "#FF0000";
+        canvas.fillRect(20, 20, (player.speed * FWD_THROTTLE) * 2, 10);
     }
 
 
