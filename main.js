@@ -254,6 +254,11 @@ var shoot_sound = new Howl({
     volume: 0.2
 });
 
+var horn_sound = new Howl({
+    urls: ['sounds/horn.mp3', 'sounds/horn.wav'],
+    volume: 0.3
+});
+
 //explosion_sound.play();
 
 //Create The player
@@ -798,6 +803,10 @@ function update() { //Updates location and reaction of objects to the canvas
         centerPull += CENTER_PULL_INCREMENT;
         centerPull = centerPull.clamp(0, MAX_PULL);
         console.log(centerPull);
+
+        if (keydown.h) {
+          horn_sound.play();
+        }
 
 
         //Player actions
