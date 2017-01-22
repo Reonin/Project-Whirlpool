@@ -14,6 +14,7 @@ var isMicInit = false;
 var isVolumeCalibrated = false;
 var ambientVolume = 0;
 var currVolume = 0;
+var peakVolume = 50; // Reasonable starting point
 var micData = {};
 var analyser;
 var freqArray = new Uint8Array(BUFF_SIZE / 2);
@@ -68,6 +69,9 @@ function getMicInput() {
         // If we calibrated the background noise volume
         if (isVolumeCalibrated) {
             currVolume = averageVolume;
+            if (currVolume > peakVolume) {
+              peakVolume = currVolume;
+            }
         } else { // Calibrate volume
             // Push this volume to the calibration array
             calibrationArr.push(averageVolume);
@@ -264,7 +268,11 @@ var INIT_X = 350;
 var INIT_Y = 50;
 var player = {
     // color: "#00A",
-    sprite: Sprite("Top_View"),
+    sprites: [
+      Sprite("Top_View1"),
+      Sprite("Top_View2"),
+      Sprite("Top_View3"),
+    ],
     x: INIT_X,
     y: INIT_Y,
     width: 173,
@@ -347,8 +355,15 @@ var player = {
         // Rotate the canvas so the boat draws turned
         canvas.rotate(this.angle);
 
+        // How far is current volume btw 0 and peak volume
+        // curr / peak to get %
+        // floor sprites.length * % = frame
+        var speedPercent = currVolume / peakVolume;
+        var frameIndex = Math.floor(this.sprites.length * speedPercent);
+        frameIndex = frameIndex.clamp(0, this.sprites.length - 1);
+        
         // Draw the boat
-        this.sprite.draw(canvas, 0, -(this.height / 2));
+        this.sprites[frameIndex].draw(canvas, 0, -(this.height / 2));
 
         // Reset the canvas to pre-rotated
         canvas.rotate(-this.angle);
@@ -1075,14 +1090,6 @@ function draw() { //Draws objects to the canvas
         player.draw();
         //peoplePickup.draw();
         //  console.log(player.y);
-
-        //Life Bar top is pink static background
-        canvas.fillStyle = "#8B8989";
-        canvas.fillRect(20, 20, 200, 10);
-
-        //Second bar is red dynamic one
-        canvas.fillStyle = "#FF0000";
-        canvas.fillRect(20, 20, (player.speed * FWD_THROTTLE) * 2, 10);
     }
 
 
