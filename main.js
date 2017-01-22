@@ -250,10 +250,25 @@ var GameLoopMusic_sound = new Howl({
 var explosion_sound = new Howl({
     urls: ['sounds/explosion.mp3', 'sounds/explosion.wav']
 });
+
 var shoot_sound = new Howl({
     urls: ['sounds/shoot.mp3', 'sounds/shoot.wav'],
     volume: 0.2
 });
+
+var pickup_sound = new Howl({
+    urls: ['sounds/pickup.wav'],
+    volume: 0.5
+});
+var dropoff_sound = new Howl({
+    urls: ['sounds/dropoff.wav'],
+    volume: 0.5
+});
+var ui_sound = new Howl({
+    urls: ['sounds/genericUI.wav'],
+    volume: 0.5
+});
+
 
 var horn_sound = new Howl({
     urls: ['sounds/horn.mp3', 'sounds/horn.wav'],
@@ -809,21 +824,23 @@ function handleCollisions() {
           if (collides(powerup, player)) {
               powerup.explode();
               player.tempPoints = player.tempPoints + 1;
+              pickup_sound.play();
               //player.lifeChange(30);
           }
       });
     }
 
-    if (collides(shore, player)) {
+    if (player.tempPoints > 0) {
+      if (collides(shore, player)) {
 
-        console.log(player.tempPoints);
-        player.points = player.points + player.tempPoints;
-        player.tempPoints = 0;
-        console.log("Dropping off the kids at the pool");
-        //player.points += player.tempPoints;
-        //  pickup.explode();
-
+          console.log(player.tempPoints);
+          player.points = player.points + player.tempPoints;
+          player.tempPoints = 0;
+          console.log("Dropping off the kids at the pool");
+          dropoff_sound.play();
+      }
     }
+
     wavecrashes.forEach(function(wavecrash) {
         if (collides(shore, wavecrash)) {
 
@@ -970,7 +987,7 @@ function update() { //Updates location and reaction of objects to the canvas
     if (currentState === states.title) {
 
         if (keydown.space) {
-
+            ui_sound.play();
             currentState = states.Game;
         }
 
@@ -1035,9 +1052,10 @@ function update() { //Updates location and reaction of objects to the canvas
         endTextY = endTextY.clamp(300, CANVAS_HEIGHT);
 
         if (keydown.r) {
-          currentState = states.Game;
-          player.reset();
-          centerPull = INIT_CENTER_PULL;
+            currentState = states.Game;
+            player.reset();
+            centerPull = INIT_CENTER_PULL;
+            ui_sound.play();
         }
 
     }
