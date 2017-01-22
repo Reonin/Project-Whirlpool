@@ -92,9 +92,6 @@ function onError(e) {
 //Generate the Canvas
 var CANVAS_WIDTH = 1920;
 var CANVAS_HEIGHT = 1080;
-var true_centerX = CANVAS_WIDTH / 2;
-var true_centerY = CANVAS_HEIGHT / 2;
-
 
 //HD Resolutions -1280x720 and 1920 × 1080 Full HD
 
@@ -319,8 +316,8 @@ var player = {
       }
 
       // Calculate distance to center
-      var dx = true_centerX - this.x;
-      var dy = true_centerY - this.y;
+      var dx = WATER_CENTER_X - this.x;
+      var dy = WATER_CENTER_Y - this.y;
       var centerDistance = Math.sqrt((dx * dx) + (dy * dy));
 
       // Calculate angle to center
@@ -602,6 +599,9 @@ var shore = {
 
 }
 
+var WATER_CENTER_X = shore.width + ((CANVAS_WIDTH - shore.width) / 2);
+var WATER_CENTER_Y = CANVAS_HEIGHT / 2;
+
 
 function collisionDetection() {
 
@@ -743,7 +743,7 @@ function handleCollisions() {
     //console.log(player.velX);
 
     // If the player is within 50px of the center
-    if (Math.abs(player.x - true_centerX) < 50 && Math.abs(player.y - true_centerY) < 50) {
+    if (Math.abs(player.x - WATER_CENTER_X) < 50 && Math.abs(player.y - WATER_CENTER_Y) < 50) {
         // End the game
         currentState = states.End;
     }
