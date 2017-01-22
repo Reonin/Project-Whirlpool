@@ -378,9 +378,9 @@ var player = {
           var personIndex = i % 4;
           var rowIndex = Math.floor(i / 4);
 
-          powerupSprite.draw(canvas,
-              (-(this.width / 4) + 5) + ((powerupSprite.width + 8) * personIndex),
-              ((this.height / 2) + 8) - (rowIndex * powerupSprite.height)
+          rescueSprite.draw(canvas,
+              (-(this.width / 4) + 5) + ((rescueSprite.width + 8) * personIndex),
+              ((this.height / 2) + 8) - (rowIndex * rescueSprite.height)
           );
         }
 
@@ -495,7 +495,7 @@ var powerups = [];
 var wavecrashes = [];
 
 powerupSprite = Sprite("Sprite_Fade");
-
+rescueSprite =  Sprite("Sprite_32px");
 function Powerup(P) {
     P = P || {};
 
