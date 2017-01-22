@@ -273,7 +273,7 @@ var player = {
       canvas.rotate(this.angle);
 
       // Draw the boat
-      this.sprite.draw(canvas, 0, 0);
+      this.sprite.draw(canvas, 0, -(this.height / 2));
 
       // Reset the canvas to pre-rotated
       canvas.rotate(-this.angle);
