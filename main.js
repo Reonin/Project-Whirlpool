@@ -494,7 +494,7 @@ var whirlpool = {
 var powerups = [];
 var wavecrashes = [];
 
-powerupSprite = Sprite("Sprite_32px");
+powerupSprite = Sprite("Sprite_Fade");
 
 function Powerup(P) {
     P = P || {};
