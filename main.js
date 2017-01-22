@@ -129,7 +129,7 @@ var states = {
     Game: 2,
     End: 3
 };
-var currentState = states.Game;
+var currentState = states.title;
 
 //Game Loop
 //var FPS = 60;
@@ -984,7 +984,8 @@ if(player.points >= 1){
       shoreGuys.draw(player.points);
 
 }}
-
+var titleScreenImg = new Image();
+titleScreenImg.src = 'images/title.jpg';
 function update() { //Updates location and reaction of objects to the canvas
 
 
@@ -1109,18 +1110,28 @@ function draw() { //Draws objects to the canvas
 
     if (currentState === states.title) {
 
-        canvas.fillStyle = "#000"; // Set color to black
-        canvas.font = 'bold 40pt Calibri';
-        var GAME_NAME_TEXT = "GAME NAME";
-        gameTextx = canvas.measureText(GAME_NAME_TEXT).width; //Centers the text based on length
-        canvas.fillText(GAME_NAME_TEXT, (CANVAS_WIDTH / 2) - (gameTextx / 2) - 3, CANVAS_HEIGHT / 3);
-        //The next two create a special text effect
-        canvas.fillStyle = "#F00";
-        canvas.fillText(GAME_NAME_TEXT, (CANVAS_WIDTH / 2) - (gameTextx / 2), CANVAS_HEIGHT / 3);
+     canvas.globalAlpha = 0.8;
+     canvas.drawImage(titleScreenImg, 0, 0, CANVAS_WIDTH + 650, CANVAS_HEIGHT);
+     canvas.globalAlpha = 1;
 
-        canvas.fillStyle = "00F";
-        canvas.fillText(GAME_NAME_TEXT, (CANVAS_WIDTH / 2) - (gameTextx / 2) + 3, CANVAS_HEIGHT / 3);
+     canvas.fillStyle = "#000"; // Set color to black
+     canvas.font = 'bold 40pt Calibri';
+     var GAME_NAME_TEXT = "Thar She Blows";
+     gameTextx = canvas.measureText(GAME_NAME_TEXT).width; //Centers the text based on length
+     canvas.fillText(GAME_NAME_TEXT, (CANVAS_WIDTH / 2) - (gameTextx / 2) - 3, CANVAS_HEIGHT / 3);
+     //The next two create a special text effect
+     canvas.fillStyle = "#F00";
+     canvas.fillText(GAME_NAME_TEXT, (CANVAS_WIDTH / 2) - (gameTextx / 2), CANVAS_HEIGHT / 3);
 
+     canvas.fillStyle = "00F";
+     canvas.fillText(GAME_NAME_TEXT, (CANVAS_WIDTH / 2) - (gameTextx / 2) + 3, CANVAS_HEIGHT / 3);
+
+
+     canvas.fillStyle = "#F00";
+     canvas.font = 'bold 20pt Calibri';
+     var SPACEBAR_TEXT = "Press Space to Continue";
+     spaceBarTextx = canvas.measureText(SPACEBAR_TEXT).width; //Centers the text based on length
+     canvas.fillText(SPACEBAR_TEXT, (CANVAS_WIDTH / 2) - (spaceBarTextx / 2), CANVAS_HEIGHT - CANVAS_HEIGHT / 4);
 
         canvas.fillStyle = "#F00";
         canvas.font = 'bold 20pt Calibri';
