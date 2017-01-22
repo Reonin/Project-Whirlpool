@@ -250,33 +250,17 @@ var GameLoopMusic_sound = new Howl({
 var explosion_sound = new Howl({
     urls: ['sounds/explosion.mp3', 'sounds/explosion.wav']
 });
-
 var shoot_sound = new Howl({
     urls: ['sounds/shoot.mp3', 'sounds/shoot.wav'],
     volume: 0.2
 });
-
-var pickup_sound = new Howl({
-    urls: ['sounds/pickup.wav'],
-    volume: 0.5
-});
-var dropoff_sound = new Howl({
-    urls: ['sounds/dropoff.wav'],
-    volume: 0.5
-});
-var ui_sound = new Howl({
-    urls: ['sounds/genericUI.wav'],
-    volume: 0.5
-});
-
 
 var horn_sound = new Howl({
     urls: ['sounds/horn.mp3', 'sounds/horn.wav'],
     volume: 0.3
 });
 
-var endScreenImg = new Image();
-endScreenImg.src = 'images/whirlpool_end.png';
+
 
 //explosion_sound.play();
 
@@ -341,9 +325,6 @@ var player = {
 
       if (keydown.h) {
           horn_sound.play();
-      }
-      if(keydown.r) {
-          currentState == states.title;
       }
 
       // Calculate distance to center
@@ -410,7 +391,7 @@ var player = {
         canvas.translate(-(this.x + (this.width / 2)), -(this.y + (this.height / 2)));
 
     },
-    shoot: function() {
+    shoot: function() {l
         var bulletPosition = this.midpoint();
         shoot_sound.play();
 
@@ -478,6 +459,8 @@ var FWD_THROTTLE = 10;
 var ang = 0;
 var img = new Image();
 img.src = 'images/swirly.png';
+var img2 = new Image();
+img2.src = 'images/secondPool.png';
 var whirlpool = {
     sprite: Sprite("swirly"),
     width: 750,
@@ -487,12 +470,22 @@ var whirlpool = {
     draw: function() {
         //canvas.fillStyle = this.color;
         // canvas.fillRect(this.x, this.y, this.width, this.height);
+
+        canvas.save(); //saves the state of canvas
+        canvas.clearRect(0, 0, canvas.width, canvas.height); //clear the canvas
+        canvas.translate(whirlpool.width + 400, whirlpool.height - 190); //let's translate
+        canvas.rotate(Math.PI / 180 * (ang -= 1)); //increment the angle and rotate the image
+
+                canvas.drawImage(img2, -750 / 2, -745 / 2, whirlpool.width, whirlpool.height); //draw the image ;)
+                  canvas.restore();
+
         canvas.save(); //saves the state of canvas
         canvas.clearRect(0, 0, canvas.width, canvas.height); //clear the canvas
         canvas.translate(whirlpool.width + 400, whirlpool.height - 190); //let's translate
         canvas.rotate(Math.PI / 180 * (ang += 5)); //increment the angle and rotate the image
         //  this.sprite.draw(canvas, this.x/40000, this.y/9000);
         canvas.drawImage(img, -750 / 2, -750 / 2, whirlpool.width, whirlpool.height); //draw the image ;)
+
 
         // canvas.drawImage(img, -whirlpool.width / 2, -whirlpool.height / 2, whirlpool.width, whirlpool.height); //draw the image ;)
         canvas.restore(); //restore the state of canvas
@@ -827,23 +820,21 @@ function handleCollisions() {
           if (collides(powerup, player)) {
               powerup.explode();
               player.tempPoints = player.tempPoints + 1;
-              pickup_sound.play();
               //player.lifeChange(30);
           }
       });
     }
 
-    if (player.tempPoints > 0) {
-      if (collides(shore, player)) {
+    if (collides(shore, player)) {
 
-          console.log(player.tempPoints);
-          player.points = player.points + player.tempPoints;
-          player.tempPoints = 0;
-          console.log("Dropping off the kids at the pool");
-          dropoff_sound.play();
-      }
+        console.log(player.tempPoints);
+        player.points = player.points + player.tempPoints;
+        player.tempPoints = 0;
+        console.log("Dropping off the kids at the pool");
+        //player.points += player.tempPoints;
+        //  pickup.explode();
+
     }
-
     wavecrashes.forEach(function(wavecrash) {
         if (collides(shore, wavecrash)) {
 
@@ -990,7 +981,7 @@ function update() { //Updates location and reaction of objects to the canvas
     if (currentState === states.title) {
 
         if (keydown.space) {
-            ui_sound.play();
+
             currentState = states.Game;
         }
 
@@ -1055,10 +1046,9 @@ function update() { //Updates location and reaction of objects to the canvas
         endTextY = endTextY.clamp(300, CANVAS_HEIGHT);
 
         if (keydown.r) {
-            currentState = states.Game;
-            player.reset();
-            centerPull = INIT_CENTER_PULL;
-            ui_sound.play();
+          currentState = states.Game;
+          player.reset();
+          centerPull = INIT_CENTER_PULL;
         }
 
     }
@@ -1143,17 +1133,9 @@ function draw() { //Draws objects to the canvas
 
     if (currentState === states.End) {
 
-        canvas.globalAlpha = 0.8;
-        canvas.drawImage(endScreenImg, 0, 0, CANVAS_WIDTH + 650, CANVAS_HEIGHT);
-        canvas.globalAlpha = 1;
+
         canvas.fillStyle = "#F00"; // Set color to red
         canvas.font = '25pt Calibri';
-
-        var endScoreText = "Score: " + player.points;
-        endTextX = canvas.measureText(endScoreText).width; //Centers the text based on length
-        //canvas.fillText(GameOVER_TEXT, (CANVAS_WIDTH/2) - (GameOVER_TEXTx/2) , CANVAS_HEIGHT-CANVAS_HEIGHT/4);
-
-        canvas.fillText(endScoreText, (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 135);
 
         var GameOVER_TEXT = "Game Over";
         endTextX = canvas.measureText(GameOVER_TEXT).width; //Centers the text based on length
@@ -1164,31 +1146,15 @@ function draw() { //Draws objects to the canvas
 
         canvas.fillStyle = "#000"; // Set color to black
         canvas.font = '20pt Calibri';
-        endTextX = canvas.measureText("Blake Balick-Schreiber").width;
-        canvas.fillText("Blake Balick-Schreiber", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 45);
+        endTextX = canvas.measureText("First Firstnameson").width;
+        canvas.fillText("First Firstnameson", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 45);
+
 
         canvas.fillStyle = "#000"; // Set color to black
         canvas.font = '20pt Calibri';
-        canvas.fillText("Corey Jeffers", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
+        canvas.fillText("Second Secondton", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
 
-        canvas.fillStyle = "#000"; // Set color to black
-        canvas.font = '20pt Calibri';
-        canvas.fillText("Ryan Giglio", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 45);
 
-        canvas.fillStyle = "#000"; // Set color to black
-        canvas.font = '20pt Calibri';
-        canvas.fillText("Dean Razavi", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 90);
-
-        canvas.fillStyle = "#000"; // Set color to black
-        canvas.font = '20pt Calibri';
-        canvas.fillText("Okwudili Udeh", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 135);
-
-        var Rbtn = "Press R to go to start";
-        endTextX = canvas.measureText(Rbtn).width; //Centers the text based on length
-        //canvas.fillText(GameOVER_TEXT, (CANVAS_WIDTH/2) - (GameOVER_TEXTx/2) , CANVAS_HEIGHT-CANVAS_HEIGHT/4);
-        canvas.fillStyle = "#F00"; // Set color to black
-        canvas.font = '32pt Calibri';
-        canvas.fillText(Rbtn, (CANVAS_WIDTH / 2) - (endTextX / 2) - 50, endTextY + 180);
 
     }
 
