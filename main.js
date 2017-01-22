@@ -1051,7 +1051,7 @@ function update() { //Updates location and reaction of objects to the canvas
         endTextY = endTextY.clamp(300, CANVAS_HEIGHT);
 
         if (keydown.r) {
-            currentState = states.Game;
+            currentState = states.title;
             player.reset();
             centerPull = INIT_CENTER_PULL;
             ui_sound.play();
@@ -1145,6 +1145,12 @@ function draw() { //Draws objects to the canvas
         canvas.fillStyle = "#F00"; // Set color to red
         canvas.font = '25pt Calibri';
 
+        var endScoreText = "Score: " + player.points;
+        endTextX = canvas.measureText(endScoreText).width; //Centers the text based on length
+        //canvas.fillText(GameOVER_TEXT, (CANVAS_WIDTH/2) - (GameOVER_TEXTx/2) , CANVAS_HEIGHT-CANVAS_HEIGHT/4);
+
+        canvas.fillText(endScoreText, (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 135);
+
         var GameOVER_TEXT = "Game Over";
         endTextX = canvas.measureText(GameOVER_TEXT).width; //Centers the text based on length
         //canvas.fillText(GameOVER_TEXT, (CANVAS_WIDTH/2) - (GameOVER_TEXTx/2) , CANVAS_HEIGHT-CANVAS_HEIGHT/4);
@@ -1154,15 +1160,31 @@ function draw() { //Draws objects to the canvas
 
         canvas.fillStyle = "#000"; // Set color to black
         canvas.font = '20pt Calibri';
-        endTextX = canvas.measureText("First Firstnameson").width;
-        canvas.fillText("First Firstnameson", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 45);
-
+        endTextX = canvas.measureText("Blake Balick-Schreiber").width;
+        canvas.fillText("Blake Balick-Schreiber", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 45);
 
         canvas.fillStyle = "#000"; // Set color to black
         canvas.font = '20pt Calibri';
-        canvas.fillText("Second Secondton", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
+        canvas.fillText("Corey Jeffers", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
 
+        canvas.fillStyle = "#000"; // Set color to black
+        canvas.font = '20pt Calibri';
+        canvas.fillText("Ryan Giglio", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 45);
 
+        canvas.fillStyle = "#000"; // Set color to black
+        canvas.font = '20pt Calibri';
+        canvas.fillText("Dean Razavi", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 90);
+
+        canvas.fillStyle = "#000"; // Set color to black
+        canvas.font = '20pt Calibri';
+        canvas.fillText("Okwudili Udeh", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 135);
+
+        var Rbtn = "Press R to go to start";
+        endTextX = canvas.measureText(Rbtn).width; //Centers the text based on length
+        //canvas.fillText(GameOVER_TEXT, (CANVAS_WIDTH/2) - (GameOVER_TEXTx/2) , CANVAS_HEIGHT-CANVAS_HEIGHT/4);
+        canvas.fillStyle = "#F00"; // Set color to black
+        canvas.font = '32pt Calibri';
+        canvas.fillText(Rbtn, (CANVAS_WIDTH / 2) - (endTextX / 2) - 50, endTextY + 180);
 
     }
 
