@@ -844,16 +844,17 @@ function handleCollisions() {
     });
 
 
-    if (collides(shore, player)) {
+    if (player.tempPoints > 0) {
+      if (collides(shore, player)) {
 
-        console.log(player.tempPoints);
-        player.points = player.points + player.tempPoints;
-        player.tempPoints = 0;
-        console.log("Dropping off the kids at the pool");
-        //player.points += player.tempPoints;
-        //  pickup.explode();
-
+          console.log(player.tempPoints);
+          player.points = player.points + player.tempPoints;
+          player.tempPoints = 0;
+          console.log("Dropping off the kids at the pool");
+          dropoff_sound.play();
+      }
     }
+
     wavecrashes.forEach(function(wavecrash) {
         if (collides(shore, wavecrash)) {
 
