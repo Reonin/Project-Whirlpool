@@ -265,8 +265,8 @@ var player = {
     life: 100,
     angle: 0, // In Radians: 0 is right, -1.57 up, 1.57 down, -+3.14 left
     speed: 0,
-    thrust: 5,
-    turnSpeed: 0.05,
+    keyboardThrust: 5,
+    keyboardTurnSpeed: 0.05,
     draw: function() {
       // Translate the canvas to the back center of the boat 
       canvas.translate(this.x, this.y + (this.height / 2));
@@ -329,8 +329,8 @@ var player = {
 };
 
 var TURNING_RADIUS = 100;
-var CENTER_PULL = 0.5;
-var FWD_THROTTLE = 5;
+var CENTER_PULL = 1;
+var FWD_THROTTLE = 10;
 
 
 var whirlpool = {
@@ -733,15 +733,15 @@ function update() { //Updates location and reaction of objects to the canvas
 
         // Keyboard controls for development
         if (keydown.left) {
-          player.angle -= player.turnSpeed;
+          player.angle -= player.keyboardTurnSpeed;
         }
 
         if (keydown.right) {
-          player.angle += player.turnSpeed;
+          player.angle += player.keyboardTurnSpeed;
         }
 
         if (keydown.up) {
-          player.speed = player.thrust;
+          player.speed = player.keyboardThrust;
         }
 
         // Calculate distance to center
