@@ -315,6 +315,10 @@ var player = {
           // Axes range from -1 to 1
           // TURNING_RADIUS slows down your turning speed
           this.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
+
+          if (gamepads[0].buttons[6].pressed || gamepads[0].buttons[7].pressed) {
+              horn_sound.play();
+          }
       }
 
       // If the current noise is louder than the background noise
@@ -337,10 +341,6 @@ var player = {
 
       if (keydown.up) {
           this.speed = this.keyboardThrust;
-      }
-
-      if (keydown.h) {
-          horn_sound.play();
       }
 
       // Calculate distance to center
