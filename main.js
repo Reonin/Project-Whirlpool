@@ -495,9 +495,23 @@ function Powerup(P) {
 
 
     P.update = function() {
-        // P.x += P.xVelocity;
-        // P.y += P.yVelocity;
-        //
+
+        // Calculate distance to center
+        var dx = WATER_CENTER_X - P.x;
+        var dy = WATER_CENTER_Y - P.y;
+        var centerDistance = Math.sqrt((dx * dx) + (dy * dy));
+
+        // Calculate angle to center
+        var centerAngle = Math.atan2(dy, dx);
+
+        // Calculate velocity towards center
+        // centerPull determines strength of pull
+        var centerVelX = Math.cos(centerAngle) * (centerPull / 4);
+        var centerVelY = Math.sin(centerAngle) * (centerPull / 4);
+
+        // Move pickup
+        P.x += centerVelX;
+        P.y += centerVelY;
 
         if (Math.random() < 0.5) {
 
