@@ -346,9 +346,9 @@ var FWD_THROTTLE = 10;
 
 
 //var TO_RADIANS = Math.PI/180;
- var ang = 0;
- var img = new Image();
- img.src = 'images/swirly.png';
+var ang = 0;
+var img = new Image();
+img.src = 'images/swirly.png';
 var whirlpool = {
     sprite: Sprite("swirly"),
     width: 750,
@@ -359,29 +359,30 @@ var whirlpool = {
         //canvas.fillStyle = this.color;
         // canvas.fillRect(this.x, this.y, this.width, this.height);
         canvas.save(); //saves the state of canvas
-                   canvas.clearRect(0, 0, canvas.width, canvas.height); //clear the canvas
-                   canvas.translate(whirlpool.width+ 400, whirlpool.height - 190); //let's translate
-                   canvas.rotate(Math.PI / 180 * (ang += 5)); //increment the angle and rotate the image
-                    //  this.sprite.draw(canvas, this.x/40000, this.y/9000);
-                    canvas.drawImage(img, -750/2, -750/2, whirlpool.width, whirlpool.height); //draw the image ;)
+        canvas.clearRect(0, 0, canvas.width, canvas.height); //clear the canvas
+        canvas.translate(whirlpool.width + 400, whirlpool.height - 190); //let's translate
+        canvas.rotate(Math.PI / 180 * (ang += 5)); //increment the angle and rotate the image
+        //  this.sprite.draw(canvas, this.x/40000, this.y/9000);
+        canvas.drawImage(img, -750 / 2, -750 / 2, whirlpool.width, whirlpool.height); //draw the image ;)
 
-                  // canvas.drawImage(img, -whirlpool.width / 2, -whirlpool.height / 2, whirlpool.width, whirlpool.height); //draw the image ;)
-                   canvas.restore(); //restore the state of canvas
+        // canvas.drawImage(img, -whirlpool.width / 2, -whirlpool.height / 2, whirlpool.width, whirlpool.height); //draw the image ;)
+        canvas.restore(); //restore the state of canvas
 
-	// draw it up and to the left by half the width
-	// and height of the image
-//	context.drawImage(image, -(image.width/2), -(image.height/2));
+        // draw it up and to the left by half the width
+        // and height of the image
+        //	context.drawImage(image, -(image.width/2), -(image.height/2));
 
-	// and restore the co-ords to how they were when we began
+        // and restore the co-ords to how they were when we began
 
 
 
-      //  canvas.rotate(0.25);
+        //  canvas.rotate(0.25);
 
     },
 
 }
 var powerups = [];
+
 function Powerup(P) {
     P = P || {};
 
@@ -391,9 +392,9 @@ function Powerup(P) {
     P.sprite = Sprite("Sprite_32px");
     // P.color = "#A2B";
 
-    P.x =  Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000,
-    P.y = Math.floor(Math.random() * (1080 - 0 + 1)) + 0,
-    P.xVelocity = 0
+    P.x = Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000,
+        P.y = Math.floor(Math.random() * (1080 - 0 + 1)) + 0,
+        P.xVelocity = 0
     P.yVelocity = 2;
 
     P.width = 32;
@@ -424,18 +425,17 @@ function Powerup(P) {
         // P.y += P.yVelocity;
         //
 
-        			if (Math.random() < 0.5) {
+        if (Math.random() < 0.5) {
 
-                itsOn = !itsOn;
-              }
-
-        if(itsOn == true){
-            P.y = P.y+ 1;
-            //itsOn = false;
+            itsOn = !itsOn;
         }
-        else{
+
+        if (itsOn == true) {
+            P.y = P.y + 1;
+            //itsOn = false;
+        } else {
             P.y = P.y - 1;
-              //itsOn = true;
+            //itsOn = true;
         }
 
 
@@ -618,23 +618,23 @@ function handleCollisions() {
 
 
 
-    		//PowerUp Collision
-    		powerups.forEach(function(powerup) {
-    				if (collides(powerup, player)) {
-    						powerup.explode();
-                player.tempPoints = player.tempPoints + 1;
-    						  //player.lifeChange(30);
-    				}
-    		});
+    //PowerUp Collision
+    powerups.forEach(function(powerup) {
+        if (collides(powerup, player)) {
+            powerup.explode();
+            player.tempPoints = player.tempPoints + 1;
+            //player.lifeChange(30);
+        }
+    });
 
-    if(collides(shore, player)){
+    if (collides(shore, player)) {
 
-      console.log(player.tempPoints);
-      player.points = player.points + player.tempPoints;
-      player.tempPoints = 0;
-      console.log("Dropping off the kids at the pool");
-    //player.points += player.tempPoints;
-  //  pickup.explode();
+        console.log(player.tempPoints);
+        player.points = player.points + player.tempPoints;
+        player.tempPoints = 0;
+        console.log("Dropping off the kids at the pool");
+        //player.points += player.tempPoints;
+        //  pickup.explode();
 
     }
 
@@ -683,8 +683,8 @@ function ParallaxScrolling(canvas, imgdata) {
             if (self.layers[i].x > self.layers[i].img.width) self.layers[i].x = 0;
             self.layers[i].x += i;
 
-          //  debugger;
-          //  if (self.layers[i].y > self.layers[i].img.width) self.layers[i].y = 0;
+            //  debugger;
+            //  if (self.layers[i].y > self.layers[i].img.width) self.layers[i].y = 0;
             self.layers[i].y += i;
         }
     };
@@ -811,34 +811,34 @@ function update() { //Updates location and reaction of objects to the canvas
 
         // If the player is within 50px of the center
         if (Math.abs(player.x - true_centerX) < 50 && Math.abs(player.y - true_centerY) < 50) {
-          // End the game
-          currentState = states.End;
+            // End the game
+            currentState = states.End;
         }
 
         // Increase the pull towards the center
         centerPull += CENTER_PULL_INCREMENT;
         centerPull = centerPull.clamp(0, MAX_PULL);
-      //  console.log(centerPull);
+        //  console.log(centerPull);
 
         if (keydown.h) {
-          horn_sound.play();
+            horn_sound.play();
         }
 
 
         //Player actions
 
         //Powerup Update logic
-      				powerups.forEach(function(powerup){
-      					powerup.update();
-      				});
+        powerups.forEach(function(powerup) {
+            powerup.update();
+        });
 
-      				powerups = powerups.filter(function(powerup) {
-      						return powerup.active;
-      				});
+        powerups = powerups.filter(function(powerup) {
+            return powerup.active;
+        });
 
-      				if (Math.random() < 0.01) {
-      						powerups.push(Powerup());
-      				}
+        if (Math.random() < 0.01) {
+            powerups.push(Powerup());
+        }
 
         //Enemy Update logic
 
@@ -916,17 +916,17 @@ function draw() { //Draws objects to the canvas
         shore.draw();
 
 
-
-        				//PowerUp Draw
-        				powerups.forEach(function(powerup) {
-        						powerup.draw();
-        				});
+        whirlpool.draw();
+        //PowerUp Draw
+        powerups.forEach(function(powerup) {
+            powerup.draw();
+        });
         //whirlpool Draw
 
-        whirlpool.draw();
-      //  topleftQuad.draw();
-      //  topRightQuad.draw();
-      //  botleftQuad.draw();
+
+        //  topleftQuad.draw();
+        //  topRightQuad.draw();
+        //  botleftQuad.draw();
         //botRightQuad.draw();
         //playerdraw
         player.draw();
