@@ -264,8 +264,9 @@ var player = {
     height: 32,
     life: 100,
     angle: 0, // In Radians: 0 is right, -1.57 up, 1.57 down, -+3.14 left
-    thrust: 1,
-    speed: 4,
+    speed: 0,
+    thrust: 5,
+    turnSpeed: 0.05,
     draw: function() {
       // Translate the canvas to the back center of the boat 
       canvas.translate(this.x, this.y + (this.height / 2));
@@ -721,7 +722,6 @@ function update() { //Updates location and reaction of objects to the canvas
           player.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
         }
 
-
         // If the current noise is louder than the background noise
         if (currVolume > ambientVolume) {
           // Set the new boat speed
@@ -729,6 +729,19 @@ function update() { //Updates location and reaction of objects to the canvas
           player.speed = currVolume / FWD_THROTTLE;
         } else {
           player.speed = 0;
+        }
+
+        // Keyboard controls for development
+        if (keydown.left) {
+          player.angle -= player.turnSpeed;
+        }
+
+        if (keydown.right) {
+          player.angle += player.turnSpeed;
+        }
+
+        if (keydown.up) {
+          player.speed = player.thrust;
         }
 
         // Calculate distance to center
