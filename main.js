@@ -335,7 +335,7 @@ var player = {
 var centerPull = 1;
 
 var TURNING_RADIUS = 100;
-var CENTER_INCREMENT = 0.001;
+var CENTER_PULL_INCREMENT = 0.001;
 var MAX_PULL = 4;
 var FWD_THROTTLE = 10;
 
@@ -795,7 +795,7 @@ function update() { //Updates location and reaction of objects to the canvas
         }
 
         // Increase the pull towards the center
-        centerPull += CENTER_INCREMENT;
+        centerPull += CENTER_PULL_INCREMENT;
         centerPull = centerPull.clamp(0, MAX_PULL);
         console.log(centerPull);
 
