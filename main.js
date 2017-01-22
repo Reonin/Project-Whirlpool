@@ -247,16 +247,8 @@ var GameLoopMusic_sound = new Howl({
     autoplay: true,
     loop: true,
 });
-var explosion_sound = new Howl({
-    urls: ['sounds/explosion.mp3', 'sounds/explosion.wav']
-});
-var shoot_sound = new Howl({
-    urls: ['sounds/shoot.mp3', 'sounds/shoot.wav'],
-    volume: 0.2
-});
 
-<<<<<<< HEAD
-=======
+
 var pickup_sound = new Howl({
     urls: ['sounds/pickup.wav'],
     volume: 0.5
@@ -270,7 +262,7 @@ var ui_sound = new Howl({
     volume: 0.5
 });
 
->>>>>>> origin/master
+
 var horn_sound = new Howl({
     urls: ['sounds/horn.wav'],
     volume: 0.7
@@ -343,13 +335,8 @@ var player = {
           this.speed = this.keyboardThrust;
       }
 
-<<<<<<< HEAD
-      if (keydown.h) {
-          horn_sound.play();
-      }
 
-=======
->>>>>>> origin/master
+
       // Calculate distance to center
       var dx = WATER_CENTER_X - this.x;
       var dy = WATER_CENTER_Y - this.y;
@@ -836,18 +823,7 @@ function handleCollisions() {
         currentState = states.End;
     }
 
-<<<<<<< HEAD
-    if (player.tempPoints < MAX_PICKUP) {
-      //PowerUp Collision
-      powerups.forEach(function(powerup) {
-          if (collides(powerup, player)) {
-              powerup.explode();
-              player.tempPoints = player.tempPoints + 1;
-              //player.lifeChange(30);
-          }
-      });
-    }
-=======
+
     //PowerUp Collision
     powerups.forEach(function(powerup) {
         if (player.tempPoints < MAX_PICKUP) {
@@ -862,9 +838,9 @@ function handleCollisions() {
         if (Math.abs(powerup.x - WATER_CENTER_X) < 50 && Math.abs(powerup.y - WATER_CENTER_Y) < 50) {
           powerup.explode();
         }
-        
+
     });
->>>>>>> origin/master
+
 
     if (collides(shore, player)) {
 
@@ -1089,16 +1065,12 @@ function update() { //Updates location and reaction of objects to the canvas
         endTextY = endTextY.clamp(300, CANVAS_HEIGHT);
 
         if (keydown.r) {
-<<<<<<< HEAD
-          currentState = states.Game;
-          player.reset();
-          centerPull = INIT_CENTER_PULL;
-=======
+
             currentState = states.title;
             player.reset();
             centerPull = INIT_CENTER_PULL;
             ui_sound.play();
->>>>>>> origin/master
+
         }
 
     }
@@ -1199,8 +1171,7 @@ function draw() { //Draws objects to the canvas
         endTextX = canvas.measureText("First Firstnameson").width;
         canvas.fillText("First Firstnameson", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 45);
 
-<<<<<<< HEAD
-=======
+
         canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         canvas.fillText("Corey Jeffers", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
@@ -1208,18 +1179,12 @@ function draw() { //Draws objects to the canvas
         canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         canvas.fillText("Ryan Giglio", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 45);
->>>>>>> origin/master
 
-        canvas.fillStyle = "#FFF"; // Set color to black
-        canvas.font = '20pt Calibri';
-        canvas.fillText("Second Secondton", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
 
-<<<<<<< HEAD
-=======
         canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         canvas.fillText("Okwudili Udeh", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 135);
->>>>>>> origin/master
+
 
 
     }
