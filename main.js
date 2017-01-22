@@ -412,7 +412,17 @@ var botRightQuad = {
     },
 
 }
+var peoplePickup = {
+    sprite: Sprite("Sprite_32px"),
+    width: 50,
+    height: 50,
+    x: 50,
+    y: 50,
+    draw: function() {
+        this.sprite.draw(canvas, this.x, this.y);
+    },
 
+}
 
 var shore = {
     sprite: Sprite("shore"),
@@ -628,6 +638,17 @@ function handleCollisions() {
         //  player.velX += WavePull;
         //  }
     }
+
+
+
+    if(collides(shore, player)){
+
+    //player.points += player.tempPoints;
+  //  pickup.explode();
+
+    }
+
+
 
 }
 
@@ -898,7 +919,7 @@ function draw() { //Draws objects to the canvas
         //botRightQuad.draw();
         //playerdraw
         player.draw();
-
+        peoplePickup.draw();
         //  console.log(player.y);
 
         //Life Bar top is pink static background
