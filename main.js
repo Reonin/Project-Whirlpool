@@ -255,9 +255,25 @@ var shoot_sound = new Howl({
     volume: 0.2
 });
 
+<<<<<<< HEAD
+=======
+var pickup_sound = new Howl({
+    urls: ['sounds/pickup.wav'],
+    volume: 0.5
+});
+var dropoff_sound = new Howl({
+    urls: ['sounds/dropoff.wav'],
+    volume: 0.5
+});
+var ui_sound = new Howl({
+    urls: ['sounds/genericUI.wav'],
+    volume: 0.5
+});
+
+>>>>>>> origin/master
 var horn_sound = new Howl({
-    urls: ['sounds/horn.mp3', 'sounds/horn.wav'],
-    volume: 0.3
+    urls: ['sounds/horn.wav'],
+    volume: 0.7
 });
 
 
@@ -299,6 +315,10 @@ var player = {
           // Axes range from -1 to 1
           // TURNING_RADIUS slows down your turning speed
           this.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
+
+          if (gamepads[0].buttons[6].pressed || gamepads[0].buttons[7].pressed) {
+              horn_sound.play();
+          }
       }
 
       // If the current noise is louder than the background noise
@@ -323,10 +343,13 @@ var player = {
           this.speed = this.keyboardThrust;
       }
 
+<<<<<<< HEAD
       if (keydown.h) {
           horn_sound.play();
       }
 
+=======
+>>>>>>> origin/master
       // Calculate distance to center
       var dx = WATER_CENTER_X - this.x;
       var dy = WATER_CENTER_Y - this.y;
@@ -452,8 +475,7 @@ var centerPull = INIT_CENTER_PULL;
 var TURNING_RADIUS = 100;
 var CENTER_PULL_INCREMENT = 0.001;
 var MAX_PULL = 4;
-var FWD_THROTTLE = 10;
-
+var FWD_THROTTLE = 5;
 
 //var TO_RADIANS = Math.PI/180;
 var ang = 0;
@@ -814,6 +836,7 @@ function handleCollisions() {
         currentState = states.End;
     }
 
+<<<<<<< HEAD
     if (player.tempPoints < MAX_PICKUP) {
       //PowerUp Collision
       powerups.forEach(function(powerup) {
@@ -824,6 +847,24 @@ function handleCollisions() {
           }
       });
     }
+=======
+    //PowerUp Collision
+    powerups.forEach(function(powerup) {
+        if (player.tempPoints < MAX_PICKUP) {
+            if (collides(powerup, player)) {
+                powerup.explode();
+                player.tempPoints = player.tempPoints + 1;
+                pickup_sound.play();
+                //player.lifeChange(30);
+            }
+        }
+
+        if (Math.abs(powerup.x - WATER_CENTER_X) < 50 && Math.abs(powerup.y - WATER_CENTER_Y) < 50) {
+          powerup.explode();
+        }
+        
+    });
+>>>>>>> origin/master
 
     if (collides(shore, player)) {
 
@@ -941,7 +982,9 @@ var shoreGuys = {
     y: 150,
     draw: function(points) {
       for (var i = 0; i < points; i++) {
-        this.sprite.draw(canvas, 10, 150 + 45*i);
+        var guyCol = Math.floor(i / 20);
+
+        this.sprite.draw(canvas, 10 + (30 * guyCol), 150 + 45 * (i % 20));
       }
 
     },
@@ -1046,9 +1089,16 @@ function update() { //Updates location and reaction of objects to the canvas
         endTextY = endTextY.clamp(300, CANVAS_HEIGHT);
 
         if (keydown.r) {
+<<<<<<< HEAD
           currentState = states.Game;
           player.reset();
           centerPull = INIT_CENTER_PULL;
+=======
+            currentState = states.title;
+            player.reset();
+            centerPull = INIT_CENTER_PULL;
+            ui_sound.play();
+>>>>>>> origin/master
         }
 
     }
@@ -1144,16 +1194,32 @@ function draw() { //Draws objects to the canvas
         canvas.fillText(GameOVER_TEXT, (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 90);
 
 
-        canvas.fillStyle = "#000"; // Set color to black
+        canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         endTextX = canvas.measureText("First Firstnameson").width;
         canvas.fillText("First Firstnameson", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 45);
 
+<<<<<<< HEAD
+=======
+        canvas.fillStyle = "#FFF"; // Set color to black
+        canvas.font = '20pt Calibri';
+        canvas.fillText("Corey Jeffers", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
 
-        canvas.fillStyle = "#000"; // Set color to black
+        canvas.fillStyle = "#FFF"; // Set color to black
+        canvas.font = '20pt Calibri';
+        canvas.fillText("Ryan Giglio", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 45);
+>>>>>>> origin/master
+
+        canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         canvas.fillText("Second Secondton", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
 
+<<<<<<< HEAD
+=======
+        canvas.fillStyle = "#FFF"; // Set color to black
+        canvas.font = '20pt Calibri';
+        canvas.fillText("Okwudili Udeh", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 135);
+>>>>>>> origin/master
 
 
     }
