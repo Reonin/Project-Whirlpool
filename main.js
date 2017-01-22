@@ -269,10 +269,9 @@ var ui_sound = new Howl({
     volume: 0.5
 });
 
-
 var horn_sound = new Howl({
-    urls: ['sounds/horn.mp3', 'sounds/horn.wav'],
-    volume: 0.3
+    urls: ['sounds/horn.wav'],
+    volume: 0.7
 });
 
 var endScreenImg = new Image();
