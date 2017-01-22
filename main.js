@@ -302,7 +302,6 @@ var player = {
           this.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
       }
 
-
       // If the current noise is louder than the background noise
       if (currVolume > ambientVolume) {
           // Set the new boat speed
@@ -356,8 +355,8 @@ var player = {
       this.y = this.y.clamp(0, CANVAS_HEIGHT - this.height); //prevents character from going past canvas
     },
     draw: function() {
-        // Translate the canvas to the back center of the boat
-        canvas.translate(this.x, this.y + (this.height / 2));
+        // Translate the canvas to the middle of the boat
+        canvas.translate(this.x + (this.width / 2), this.y + (this.height / 2));
         // Rotate the canvas so the boat draws turned
         canvas.rotate(this.angle);
 
@@ -369,7 +368,7 @@ var player = {
         frameIndex = frameIndex.clamp(0, this.sprites.length - 1);
 
         // Draw the boat
-        this.sprites[frameIndex].draw(canvas, 0, -(this.height / 2));
+        this.sprites[frameIndex].draw(canvas, -(this.width / 2), -(this.height / 2));
 
         // Draw the rescued people
 
@@ -377,12 +376,12 @@ var player = {
         canvas.rotate(Math.PI / 2);
 
         for (var i = 0; i < this.tempPoints; i++) {
-          var rowNumber = (Math.floor(i / 4) + 1);
+          var personIndex = i % 4;
+          var rowIndex = Math.floor(i / 4);
 
-          powerupSprite.draw(canvas,
-              // (left edge - initial offset) + (10px between sprites) + (left position)
-              (-((this.height / 2) * rowNumber) - 5) + (10 * ((i % 4) + 1)) + (powerupSprite.width * i),
-              -(powerupSprite.height * rowNumber)
+          rescueSprite.draw(canvas,
+              (-(this.width / 4) + 5) + ((rescueSprite.width + 8) * personIndex),
+              ((this.height / 2) + 8) - (rowIndex * rescueSprite.height)
           );
         }
 
@@ -390,7 +389,7 @@ var player = {
 
         // Reset the canvas to pre-rotated
         canvas.rotate(-this.angle);
-        canvas.translate(-this.x, -(this.y + (this.height / 2)));
+        canvas.translate(-(this.x + (this.width / 2)), -(this.y + (this.height / 2)));
 
     },
     shoot: function() {
@@ -496,8 +495,8 @@ var whirlpool = {
 var powerups = [];
 var wavecrashes = [];
 
-powerupSprite = Sprite("Sprite_32px");
-
+powerupSprite = Sprite("Sprite_Fade");
+rescueSprite =  Sprite("Sprite_32px");
 function Powerup(P) {
     P = P || {};
 
