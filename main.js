@@ -410,7 +410,8 @@ var player = {
     },
 };
 
-var centerPull = 1;
+var INIT_CENTER_PULL = 1;
+var centerPull = INIT_CENTER_PULL;
 
 var TURNING_RADIUS = 100;
 var CENTER_PULL_INCREMENT = 0.001;
@@ -995,6 +996,7 @@ function update() { //Updates location and reaction of objects to the canvas
         if (keydown.r) {
           currentState = states.Game;
           player.reset();
+          centerPull = INIT_CENTER_PULL;
         }
         
     }
