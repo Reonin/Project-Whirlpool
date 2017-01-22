@@ -277,6 +277,73 @@ var player = {
     speed: 0,
     keyboardThrust: 5,
     keyboardTurnSpeed: 0.05,
+    points: 0,
+    tempPoints: 0,
+    update: function() {
+      // Get the gamepads
+      var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
+
+      // If there's a gamepad available
+      if (gamepads[0] !== null) {
+          // Add wheel angle to boat angle
+          // Axes range from -1 to 1
+          // TURNING_RADIUS slows down your turning speed
+          this.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
+      }
+
+
+      // If the current noise is louder than the background noise
+      if (currVolume > ambientVolume) {
+          // Set the new boat speed
+          // FWD_THROTTLE slows down your movement
+          this.speed = currVolume / FWD_THROTTLE;
+      } else {
+          this.speed = 0;
+      }
+
+      // Keyboard controls for development
+      if (keydown.left) {
+          this.angle -= this.keyboardTurnSpeed;
+      }
+
+      if (keydown.right) {
+          this.angle += this.keyboardTurnSpeed;
+      }
+
+      if (keydown.up) {
+          this.speed = this.keyboardThrust;
+      }
+
+      if (keydown.h) {
+          horn_sound.play();
+      }
+
+      // Calculate distance to center
+      var dx = true_centerX - this.x;
+      var dy = true_centerY - this.y;
+      var centerDistance = Math.sqrt((dx * dx) + (dy * dy));
+
+      // Calculate angle to center
+      var centerAngle = Math.atan2(dy, dx);
+
+      // Calculate velocity towards center
+      // centerPull determines strength of pull
+      var centerVelX = Math.cos(centerAngle) * centerPull;
+      var centerVelY = Math.sin(centerAngle) * centerPull;
+
+      // Calculate velocity of blow movement
+      var velX = Math.cos(this.angle) * this.speed;
+      var velY = Math.sin(this.angle) * this.speed;
+
+      // Move Boat
+      this.x += velX + centerVelX;
+      this.y += velY + centerVelY;
+
+      this.x = this.x.clamp(0 + shore.width + this.width - 200, CANVAS_WIDTH - this.width); //prevents character from going past canvas
+
+
+      this.y = this.y.clamp(0, CANVAS_HEIGHT - this.height); //prevents character from going past canvas
+    },
     draw: function() {
         // Translate the canvas to the back center of the boat
         canvas.translate(this.x, this.y + (this.height / 2));
@@ -336,8 +403,14 @@ var player = {
 
 
     },
-    points: 0,
-    tempPoints: 0,
+    reset: function() {
+        this.x = INIT_X;
+        this.y = INIT_Y;
+        this.angle = 0;
+        this.speed = 0;
+        this.points = 0;
+        this.tempPoints = 0;
+    },
 };
 
 var centerPull = 1;
@@ -346,15 +419,6 @@ var TURNING_RADIUS = 100;
 var CENTER_PULL_INCREMENT = 0.001;
 var MAX_PULL = 4;
 var FWD_THROTTLE = 10;
-
-function resetPlayer() {
-  player.x = INIT_X;
-  player.y = INIT_Y;
-  player.angle = 0;
-  player.speed = 0;
-  player.points = 0;
-  player.tempPoints = 0;
-}
 
 
 //var TO_RADIANS = Math.PI/180;
@@ -678,7 +742,11 @@ function handleCollisions() {
 
     //console.log(player.velX);
 
-
+    // If the player is within 50px of the center
+    if (Math.abs(player.x - true_centerX) < 50 && Math.abs(player.y - true_centerY) < 50) {
+        // End the game
+        currentState = states.End;
+    }
 
     //PowerUp Collision
     powerups.forEach(function(powerup) {
@@ -854,81 +922,11 @@ function update() { //Updates location and reaction of objects to the canvas
 
 
     if (currentState === states.Game) {
-        // Get the gamepads
-        var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
-
-        // If there's a gamepad available
-        if (gamepads[0] !== null) {
-            // Add wheel angle to boat angle
-            // Axes range from -1 to 1
-            // TURNING_RADIUS slows down your turning speed
-            player.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
-        }
-
-
-        // If the current noise is louder than the background noise
-        if (currVolume > ambientVolume) {
-            // Set the new boat speed
-            // FWD_THROTTLE slows down your movement
-            player.speed = currVolume / FWD_THROTTLE;
-        } else {
-            player.speed = 0;
-        }
-
-        // Keyboard controls for development
-        if (keydown.left) {
-            player.angle -= player.keyboardTurnSpeed;
-        }
-
-        if (keydown.right) {
-            player.angle += player.keyboardTurnSpeed;
-        }
-
-        if (keydown.up) {
-            player.speed = player.keyboardThrust;
-        }
-
-        // Calculate distance to center
-        var dx = true_centerX - player.x;
-        var dy = true_centerY - player.y;
-        var centerDistance = Math.sqrt((dx * dx) + (dy * dy));
-
-        // Calculate angle to center
-        var centerAngle = Math.atan2(dy, dx);
-
-        // Calculate velocity towards center
-        // centerPull determines strength of pull
-        var centerVelX = Math.cos(centerAngle) * centerPull;
-        var centerVelY = Math.sin(centerAngle) * centerPull;
-
-        // Calculate velocity of blow movement
-        var velX = Math.cos(player.angle) * player.speed;
-        var velY = Math.sin(player.angle) * player.speed;
-
-        // Move Boat
-        player.x += velX + centerVelX;
-        player.y += velY + centerVelY;
-
-        player.x = player.x.clamp(0 + shore.width + player.width - 200, CANVAS_WIDTH - player.width); //prevents character from going past canvas
-
-
-        player.y = player.y.clamp(0, CANVAS_HEIGHT - player.height); //prevents character from going past canvas
-
-        // If the player is within 50px of the center
-        if (Math.abs(player.x - true_centerX) < 50 && Math.abs(player.y - true_centerY) < 50) {
-            // End the game
-            currentState = states.End;
-        }
+        player.update();
 
         // Increase the pull towards the center
         centerPull += CENTER_PULL_INCREMENT;
         centerPull = centerPull.clamp(0, MAX_PULL);
-        //  console.log(centerPull);
-
-        if (keydown.h) {
-            horn_sound.play();
-        }
-
 
         //Player actions
 
@@ -981,7 +979,7 @@ function update() { //Updates location and reaction of objects to the canvas
 
         if (keydown.r) {
           currentState = states.Game;
-          resetPlayer();
+          player.reset();
         }
         
     }
