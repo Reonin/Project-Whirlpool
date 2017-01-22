@@ -260,8 +260,8 @@ var shoot_sound = new Howl({
 var player = {
     // color: "#00A",
     sprite: Sprite("spaceship"),
-    x: true_centerX,
-    y: true_centerY,
+    x: 50,
+    y: 50,
     width: 32,
     height: 32,
     life: 100,
@@ -784,6 +784,12 @@ function update() { //Updates location and reaction of objects to the canvas
 
 
         player.y = player.y.clamp(0, CANVAS_HEIGHT - player.height-shore.height); //prevents character from going past canvas
+
+        // If the player is within 50px of the center
+        if (Math.abs(player.x - true_centerX) < 50 && Math.abs(player.y - true_centerY) < 50) {
+          // End the game
+          currentState = states.End;
+        }
 
 
         //Player actions
