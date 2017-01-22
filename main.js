@@ -244,6 +244,11 @@ var endTextY = CANVAS_HEIGHT;
 //Sound creation
 var GameLoopMusic_sound = new Howl({
     urls: ['sounds/ggj16mainloop.wav'],
+    loop: true,
+});
+
+var title_music = new Howl({
+    urls: ['sounds/title.wav'],
     autoplay: true,
     loop: true,
 });
@@ -1003,8 +1008,9 @@ function update() { //Updates location and reaction of objects to the canvas
     if (currentState === states.title) {
 
         if (keydown.space) {
-
             currentState = states.Game;
+            title_music.stop();
+            GameLoopMusic_sound.play();
         }
 
 
@@ -1070,6 +1076,8 @@ function update() { //Updates location and reaction of objects to the canvas
         if (keydown.r) {
 
             currentState = states.title;
+            GameLoopMusic_sound.stop();
+            title_music.play();
             player.reset();
             centerPull = INIT_CENTER_PULL;
             ui_sound.play();
