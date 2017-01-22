@@ -260,7 +260,8 @@ var horn_sound = new Howl({
     volume: 0.3
 });
 
-
+var endScreenImg = new Image();
+endScreenImg.src = 'images/whirlpool_end.png';
 
 //explosion_sound.play();
 
@@ -1122,7 +1123,9 @@ function draw() { //Draws objects to the canvas
 
     if (currentState === states.End) {
 
-
+        canvas.globalAlpha = 0.8;
+        canvas.drawImage(endScreenImg, 0, 0, CANVAS_WIDTH + 650, CANVAS_HEIGHT);
+        canvas.globalAlpha = 1;
         canvas.fillStyle = "#F00"; // Set color to red
         canvas.font = '25pt Calibri';
 
