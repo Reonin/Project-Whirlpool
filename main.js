@@ -687,7 +687,7 @@ function ParallaxScrolling(canvas, imgdata) {
     }
 }
 
-var layer = new Array('images/space-wall.jpg', 'images/wave.gif');
+var layer = new Array('images/ocean_test.jpg', 'images/wave.gif');
 var parallax = new ParallaxScrolling(canvas, layer);
 
 function controller() {
