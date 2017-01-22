@@ -1081,8 +1081,6 @@ function update() { //Updates location and reaction of objects to the canvas
             title_music.play();
             player.reset();
             centerPull = INIT_CENTER_PULL;
-            ui_sound.play();
-
         }
 
     }
