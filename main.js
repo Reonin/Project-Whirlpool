@@ -411,10 +411,10 @@ var botRightQuad = {
 
 var shore = {
     sprite: Sprite("shore"),
-    width: 1920,
-    height: 180,
+    width: 320,
+    height: 1920,
     x: 0,
-    y: 900,
+    y: 0,
     draw: function() {
         this.sprite.draw(canvas, this.x, this.y);
     },
@@ -783,10 +783,10 @@ function update() { //Updates location and reaction of objects to the canvas
         player.x += velX + centerVelX;
         player.y += velY + centerVelY;
 
-        player.x = player.x.clamp(0, CANVAS_WIDTH - player.width); //prevents character from going past canvas
+        player.x = player.x.clamp(0 + shore.width + player.width, CANVAS_WIDTH - player.width); //prevents character from going past canvas
 
 
-        player.y = player.y.clamp(0, CANVAS_HEIGHT - player.height-shore.height); //prevents character from going past canvas
+        player.y = player.y.clamp(0, CANVAS_HEIGHT - player.height); //prevents character from going past canvas
 
         // If the player is within 50px of the center
         if (Math.abs(player.x - true_centerX) < 50 && Math.abs(player.y - true_centerY) < 50) {
