@@ -1,8 +1,97 @@
+if (!window.AudioContext) {
+  if (!window.webkitAudioContext) {
+    alert('no audiocontext found');
+  }
+  window.AudioContext = window.webkitAudioContext;
+}
+
+/* Mic Vars */
+var audioContext = new AudioContext();
+
+var BUFF_SIZE = 2048; 
+
+var isMicInit = false;
+var isVolumeCalibrated = false;
+var ambientVolume = 0;
+var currVolume = 0;
+var micData = {};
+var analyser;
+var freqArray = new Uint8Array(BUFF_SIZE / 2);
+var CALIBRATION_FRAMES = 120;
+
+var calibrationArr = [];
+
+// Normalize API call
+if (!navigator.getUserMedia) {
+  navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+}
+
+// Request mic access
+navigator.getUserMedia({ audio: true }, function(stream) {
+  micData.mediaStream = stream;
+
+  micData.micStream = audioContext.createMediaStreamSource(micData.mediaStream);
+
+  micData.scriptProcessor = audioContext.createScriptProcessor(BUFF_SIZE, 1, 1);
+
+  micData.scriptProcessor.connect(audioContext.destination);
+
+  analyser = audioContext.createAnalyser();
+  analyser.smoothingTimeConstant = 0.3;
+  analyser.fftSize = BUFF_SIZE / 2;
+
+  micData.micStream.connect(analyser);
+
+  // Connect to the processor
+  micData.micStream.connect(micData.scriptProcessor);
+
+  // Connect to the output
+  // micData.micStream.connect(audioContext.destination);
+
+  isMicInit = true;
+}, onError);
+
+function getMicInput() {
+  if (isMicInit) {
+    // Get mic volume across all frequencies
+    analyser.getByteFrequencyData(freqArray);
+
+    // Average it out
+    var averageVolume = (freqArray.reduce(function(a, b) {
+      return a + b;
+    }) / freqArray.length);
+
+    console.log(averageVolume);
+
+    // If we calibrated the background noise volume
+    if (isVolumeCalibrated) {
+      currVolume = averageVolume;
+    } else { // Calibrate volume
+      // Push this volume to the calibration array
+      calibrationArr.push(averageVolume);
+
+      // If we've collected enough data
+      if (calibrationArr.length >= CALIBRATION_FRAMES) {
+        isVolumeCalibrated = true;
+
+        // Sum and average the volume
+        ambientVolume = (calibrationArr.reduce(function(a, b) {
+          return a + b;
+        }) / calibrationArr.length);
+      }
+    }
+  }
+}
+
+function onError(e) {
+  console.log(e);
+}
+
 //Generate the Canvas
 var CANVAS_WIDTH = 1920;
 var CANVAS_HEIGHT = 1080;
-var true_centerX = CANVAS_WIDTH / 2 - 450;
-var true_centerY = 0; //CANVAS_HEIGHT/2;
+var true_centerX = CANVAS_WIDTH / 2;
+var true_centerY = CANVAS_HEIGHT / 2;
 
 
 //HD Resolutions -1280x720 and 1920 × 1080 Full HD
@@ -83,6 +172,8 @@ window.requestAnimFrame = (function() {
 
 function gameloop() {
     controller();
+    getMicInput();
+
     if (paused == false) {
         update();
         draw();
@@ -167,21 +258,27 @@ var shoot_sound = new Howl({
 var player = {
     // color: "#00A",
     sprite: Sprite("spaceship"),
-    x: 600,
-    y: 680,
+    x: true_centerX,
+    y: true_centerY,
     width: 32,
     height: 32,
     life: 100,
-    velX: 0,
-    velY: 0,
-    angle: 0,
+    angle: 0, // In Radians: 0 is right, -1.57 up, 1.57 down, -+3.14 left
     thrust: 1,
-    turnSpeed: .001,
     speed: 4,
     draw: function() {
-        //canvas.fillStyle = this.color;
-        // canvas.fillRect(this.x, this.y, this.width, this.height);
-        this.sprite.draw(canvas, this.x, this.y);
+      // Translate the canvas to the back center of the boat 
+      canvas.translate(this.x, this.y + (this.height / 2));
+      // Rotate the canvas so the boat draws turned
+      canvas.rotate(this.angle);
+
+      // Draw the boat
+      this.sprite.draw(canvas, 0, 0);
+
+      // Reset the canvas to pre-rotated
+      canvas.rotate(-this.angle);
+      canvas.translate(-this.x, -(this.y + (this.height / 2)));
+      
     },
     shoot: function() {
         var bulletPosition = this.midpoint();
@@ -229,6 +326,10 @@ var player = {
 
     }
 };
+
+var TURNING_RADIUS = 100;
+var CENTER_PULL = 0.5;
+var FWD_THROTTLE = 5;
 
 
 var whirlpool = {
@@ -442,7 +543,6 @@ function handleCollisions() {
         //enemy.explode();
         //  player.lifeChange(-10);
         //  player.friction = player.friction + .01;
-console.log(player.velY);
         //  player.velX++;
       //  if (Math.abs(player.velY) <= velocityCap) {
         if(player.velX <  3){
@@ -610,32 +710,47 @@ function update() { //Updates location and reaction of objects to the canvas
 
 
     if (currentState === states.Game) {
+        // Get the gamepads
+        var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
 
-
-        //Player Movement Controls
-        if (keydown.left) {
-            if (player.velX > -player.speed) {
-                player.angle -= player.turnSpeed;
-            }
-        }
-
-        if (keydown.right) {
-            if (player.velX < player.speed) {
-                player.angle += player.turnSpeed;
-            }
+        // If there's a gamepad available
+        if (gamepads) {
+          // Add wheel angle to boat angle
+          // Axes range from -1 to 1
+          // TURNING_RADIUS slows down your turning speed
+          player.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
         }
 
 
-        if (keydown.up) {
-            var radians = player.angle / Math.PI * 180;
-
-            player.velX = Math.cos(radians) * player.thrust;
-            player.velY = Math.sin(radians) * player.thrust;
+        // If the current noise is louder than the background noise
+        if (currVolume > ambientVolume) {
+          // Set the new boat speed
+          // FWD_THROTTLE slows down your movement
+          player.speed = currVolume / FWD_THROTTLE;
+        } else {
+          player.speed = 0;
         }
 
+        // Calculate distance to center
+        var dx = true_centerX - player.x;
+        var dy = true_centerY - player.y;
+        var centerDistance = Math.sqrt((dx * dx) + (dy * dy));
 
-        player.x += player.velX;
-        player.y += player.velY;
+        // Calculate angle to center
+        var centerAngle = Math.atan2(dy, dx);
+
+        // Calculate velocity towards center
+        // CENTER_PULL determines strength of pull
+        var centerVelX = Math.cos(centerAngle) * CENTER_PULL;
+        var centerVelY = Math.sin(centerAngle) * CENTER_PULL;
+
+        // Calculate velocity of blow movement
+        var velX = Math.cos(player.angle) * player.speed;
+        var velY = Math.sin(player.angle) * player.speed;
+
+        // Move Boat
+        player.x += velX + centerVelX;
+        player.y += velY + centerVelY;
 
         player.x = player.x.clamp(0, CANVAS_WIDTH - player.width); //prevents character from going past canvas
 
