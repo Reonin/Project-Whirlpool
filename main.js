@@ -687,7 +687,7 @@ function ParallaxScrolling(canvas, imgdata) {
     }
 }
 
-var layer = new Array('images/ocean_test.jpg', 'images/wave.gif');
+var layer = new Array('images/Whirlpool_Combined.png', 'images/wave.gif');
 var parallax = new ParallaxScrolling(canvas, layer);
 
 function controller() {
@@ -892,10 +892,10 @@ function draw() { //Draws objects to the canvas
         //whirlpool Draw
 
         whirlpool.draw();
-        topleftQuad.draw();
-        topRightQuad.draw();
-        botleftQuad.draw();
-        botRightQuad.draw();
+      //  topleftQuad.draw();
+      //  topRightQuad.draw();
+      //  botleftQuad.draw();
+        //botRightQuad.draw();
         //playerdraw
         player.draw();
 
