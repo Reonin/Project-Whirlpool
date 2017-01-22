@@ -63,7 +63,7 @@ function getMicInput() {
             return a + b;
         }) / freqArray.length);
 
-        console.log(averageVolume);
+        // console.log(averageVolume);
 
         // If we calibrated the background noise volume
         if (isVolumeCalibrated) {
@@ -332,8 +332,11 @@ var player = {
     tempPoints: 0,
 };
 
+var centerPull = 1;
+
 var TURNING_RADIUS = 100;
-var CENTER_PULL = 1;
+var CENTER_INCREMENT = 0.001;
+var MAX_PULL = 4;
 var FWD_THROTTLE = 10;
 
 
@@ -768,9 +771,9 @@ function update() { //Updates location and reaction of objects to the canvas
         var centerAngle = Math.atan2(dy, dx);
 
         // Calculate velocity towards center
-        // CENTER_PULL determines strength of pull
-        var centerVelX = Math.cos(centerAngle) * CENTER_PULL;
-        var centerVelY = Math.sin(centerAngle) * CENTER_PULL;
+        // centerPull determines strength of pull
+        var centerVelX = Math.cos(centerAngle) * centerPull;
+        var centerVelY = Math.sin(centerAngle) * centerPull;
 
         // Calculate velocity of blow movement
         var velX = Math.cos(player.angle) * player.speed;
@@ -790,6 +793,11 @@ function update() { //Updates location and reaction of objects to the canvas
           // End the game
           currentState = states.End;
         }
+
+        // Increase the pull towards the center
+        centerPull += CENTER_INCREMENT;
+        centerPull = centerPull.clamp(0, MAX_PULL);
+        console.log(centerPull);
 
 
         //Player actions
