@@ -382,6 +382,7 @@ var whirlpool = {
 
 }
 var powerups = [];
+var wavecrashes = [];
 
 function Powerup(P) {
     P = P || {};
@@ -450,6 +451,55 @@ function Powerup(P) {
     };
 
     return P;
+};
+
+
+function Wavecrash(W) {
+    W = W || {};
+
+    W.active = true;
+    W.age = Math.floor(Math.random() * 500);
+
+    W.sprite = Sprite("wavecrash");
+    // P.color = "#A2B";
+
+    W.x = 300 + Math.random() * CANVAS_WIDTH / 2;
+    W.y = CANVAS_HEIGHT / 4 + Math.random() * CANVAS_HEIGHT / 2;
+    W.xVelocity = 2
+    W.yVelocity = 0;
+
+    W.width = 32;
+    W.height = 32;
+
+    W.inBounds = function() {
+        return W.x >= 0 && W.x <= CANVAS_WIDTH &&
+            W.y >= 0 && W.y <= CANVAS_HEIGHT;
+    };
+
+    W.draw = function() {
+        //canvas.fillStyle = this.color;
+        //canvas.fillRect(this.x, this.y, this.width, this.height);
+        this.sprite.draw(canvas, this.x, this.y);
+    };
+
+    W.explode = function() {
+        this.active = false;
+        //pickup_sound.play();
+        // Extra Credit: Add an explosion graphic
+    };
+
+
+
+    W.update = function() {
+        W.x -= W.xVelocity;
+        W.y += W.yVelocity;
+        //
+        W.yVelocity = 3 * Math.sin(W.age * Math.PI / 64);
+        W.age++;
+        W.active = W.active && W.inBounds();
+    };
+
+    return W;
 };
 // var peoplePickup = {
 //     sprite: Sprite("Sprite_32px"),
@@ -637,7 +687,14 @@ function handleCollisions() {
         //  pickup.explode();
 
     }
+    wavecrashes.forEach(function(wavecrash) {
+        if (collides(shore, wavecrash)) {
 
+
+            wavecrash.explode();
+        }
+
+    })
 
 
 }
@@ -680,12 +737,21 @@ function ParallaxScrolling(canvas, imgdata) {
     // Function: Move all layer except the first one
     this.Move = function() {
         for (var i = 1; i < self.layers.length; i++) {
+
+            //    if(Math.random() < 0.3){
+
             if (self.layers[i].x > self.layers[i].img.width) self.layers[i].x = 0;
             self.layers[i].x += i;
 
+            // }else{
+            // //  if (self.layers[i].x > self.layers[i].img.width) self.layers[i].x = 0;
+            //   self.layers[i].x -= i;
+            // }
+
+
             //  debugger;
             //  if (self.layers[i].y > self.layers[i].img.width) self.layers[i].y = 0;
-            self.layers[i].y += i;
+            // self.layers[i].y += i;
         }
     };
 
@@ -703,7 +769,7 @@ function ParallaxScrolling(canvas, imgdata) {
     }
 }
 
-var layer = new Array('images/Whirlpool_Combined.png', 'images/wave.gif');
+var layer = new Array('images/Whirlpool_Combined.png', 'images/transparent.png');
 var parallax = new ParallaxScrolling(canvas, layer);
 
 function controller() {
@@ -716,6 +782,33 @@ function controller() {
     }
 
 }
+
+
+
+var shoreGuys = {
+    sprite: Sprite("Sprite_32px"),
+    width: 32,
+    height: 32,
+    x: 10,
+    y: 150,
+    draw: function(points) {
+      for (var i = 0; i < points; i++) {
+        this.sprite.draw(canvas, 10, 150 + 45*i);
+      }
+
+    },
+
+}
+
+
+
+
+function populateShore(){
+
+if(player.points >= 1){
+      shoreGuys.draw(player.points);
+
+}}
 
 function update() { //Updates location and reaction of objects to the canvas
 
@@ -840,6 +933,20 @@ function update() { //Updates location and reaction of objects to the canvas
             powerups.push(Powerup());
         }
 
+
+        wavecrashes.forEach(function(powerup) {
+            powerup.update();
+        });
+
+        wavecrashes = wavecrashes.filter(function(wavecrash) {
+            return wavecrash.active;
+        });
+
+        if (Math.random() < 0.01) {
+            wavecrashes.push(Wavecrash());
+        }
+
+
         //Enemy Update logic
 
 
@@ -914,12 +1021,19 @@ function draw() { //Draws objects to the canvas
     if (currentState === states.Game) {
         parallax.Draw(); //draw background
         shore.draw();
-
+        populateShore();
+      canvas.fillStyle = "blue"; // Set color to black
+      canvas.font = '20pt Calibri';
+      canvas.fillText("Score:" + player.points , 115, 85);
 
         whirlpool.draw();
         //PowerUp Draw
         powerups.forEach(function(powerup) {
             powerup.draw();
+        });
+
+        wavecrashes.forEach(function(wavecrash) {
+            wavecrash.draw();
         });
         //whirlpool Draw
 
