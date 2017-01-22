@@ -818,17 +818,17 @@ function handleCollisions() {
         currentState = states.End;
     }
 
-    if (player.tempPoints < MAX_PICKUP) {
-      //PowerUp Collision
-      powerups.forEach(function(powerup) {
-          if (collides(powerup, player)) {
-              powerup.explode();
-              player.tempPoints = player.tempPoints + 1;
-              pickup_sound.play();
-              //player.lifeChange(30);
-          }
-      });
-    }
+    //PowerUp Collision
+    powerups.forEach(function(powerup) {
+        if (player.tempPoints < MAX_PICKUP) {
+            if (collides(powerup, player)) {
+                powerup.explode();
+                player.tempPoints = player.tempPoints + 1;
+                pickup_sound.play();
+                //player.lifeChange(30);
+            }
+        }
+    });
 
     if (player.tempPoints > 0) {
       if (collides(shore, player)) {
