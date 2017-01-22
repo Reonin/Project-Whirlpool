@@ -392,11 +392,33 @@ function Powerup(P) {
         //pickup_sound.play();
         // Extra Credit: Add an explosion graphic
     };
+    var itsOn = true;
+    //drowning
+
 
     P.update = function() {
         // P.x += P.xVelocity;
         // P.y += P.yVelocity;
         //
+
+        			if (Math.random() < 0.5) {
+
+                itsOn = !itsOn;
+              }
+
+        if(itsOn == true){
+            P.y = P.y+ 1;
+            //itsOn = false;
+        }
+        else{
+            P.y = P.y - 1;
+              //itsOn = true;
+        }
+
+
+
+
+
         // P.xVelocity = 3 * Math.sin(P.age * Math.PI / 64);
 
         P.age++;
