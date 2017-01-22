@@ -238,7 +238,7 @@ Number.prototype.clamp = function(min, max) {
 var splashTextX = CANVAS_WIDTH / 3;
 var splashTextY = 0;
 var endTextX = CANVAS_WIDTH / 3;
-var endTextY = 0;
+var endTextY = CANVAS_HEIGHT;
 
 //Sound creation
 var GameLoopMusic_sound = new Howl({
@@ -963,12 +963,9 @@ function update() { //Updates location and reaction of objects to the canvas
     if (currentState === states.End) {
 
 
-        endTextY = endTextY + 1;
+        endTextY = endTextY - 1;
 
-        if (endTextY >= 300) {
-
-            endTextY = 300;
-        }
+        endTextY = endTextY.clamp(300, CANVAS_HEIGHT);
 
     }
 
