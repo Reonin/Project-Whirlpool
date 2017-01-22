@@ -950,7 +950,9 @@ var shoreGuys = {
     y: 150,
     draw: function(points) {
       for (var i = 0; i < points; i++) {
-        this.sprite.draw(canvas, 10, 150 + 45*i);
+        var guyCol = Math.floor(i / 20);
+
+        this.sprite.draw(canvas, 10 + (30 * guyCol), 150 + 45 * (i % 20));
       }
 
     },
