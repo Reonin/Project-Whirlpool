@@ -358,71 +358,66 @@ var whirlpool = {
     },
 
 }
-var topleftQuad = {
-    sprite: Sprite("450block"),
-    width: 450,
-    height: 450,
-    x: true_centerX,
-    y: true_centerY,
-    draw: function() {
+var powerups = [];
+function Powerup(P) {
+    P = P || {};
+
+    P.active = true;
+    P.age = Math.floor(Math.random() * 128);
+
+    P.sprite = Sprite("Sprite_32px");
+    // P.color = "#A2B";
+
+    P.x = CANVAS_WIDTH / 4 + Math.random() * CANVAS_WIDTH / 2;
+    P.y = 0;
+    P.xVelocity = 0
+    P.yVelocity = 2;
+
+    P.width = 32;
+    P.height = 32;
+
+    P.inBounds = function() {
+        return P.x >= 0 && P.x <= CANVAS_WIDTH &&
+            P.y >= 0 && P.y <= CANVAS_HEIGHT;
+    };
+
+    P.draw = function() {
         //canvas.fillStyle = this.color;
-        // canvas.fillRect(this.x, this.y, this.width, this.height);
+        //canvas.fillRect(this.x, this.y, this.width, this.height);
         this.sprite.draw(canvas, this.x, this.y);
-    },
+    };
 
-}
-var topRightQuad = {
-    sprite: Sprite("450block"),
-    width: 450,
-    height: 450,
-    x: true_centerX + 450,
-    y: true_centerY,
-    draw: function() {
-        //canvas.fillStyle = this.color;
-        // canvas.fillRect(this.x, this.y, this.width, this.height);
-        this.sprite.draw(canvas, this.x, this.y);
-    },
+    P.explode = function() {
+        this.active = false;
+        //pickup_sound.play();
+        // Extra Credit: Add an explosion graphic
+    };
 
+    P.update = function() {
+        P.x += P.xVelocity;
+        P.y += P.yVelocity;
 
+        P.xVelocity = 3 * Math.sin(P.age * Math.PI / 64);
 
-}
-var botleftQuad = {
-    sprite: Sprite("450block"),
-    width: 450,
-    height: 450,
-    x: true_centerX,
-    y: true_centerY + 450,
-    draw: function() {
-        //canvas.fillStyle = this.color;
-        // canvas.fillRect(this.x, this.y, this.width, this.height);
-        this.sprite.draw(canvas, this.x, this.y);
-    },
+        P.age++;
 
-}
-var botRightQuad = {
-    sprite: Sprite("450block"),
-    width: 450,
-    height: 450,
-    x: true_centerX + 450,
-    y: true_centerY + 450,
-    draw: function() {
-        //canvas.fillStyle = this.color;
-        // canvas.fillRect(this.x, this.y, this.width, this.height);
-        this.sprite.draw(canvas, this.x, this.y);
-    },
+        P.active = P.active && P.inBounds();
+    };
 
-}
-var peoplePickup = {
-    sprite: Sprite("Sprite_32px"),
-    width: 50,
-    height: 50,
-    x: 50,
-    y: 50,
-    draw: function() {
-        this.sprite.draw(canvas, this.x, this.y);
-    },
-
-}
+    return P;
+};
+// var peoplePickup = {
+//     sprite: Sprite("Sprite_32px"),
+//     width: 50,
+//     height: 50,
+//     x: 50,
+//     y: 50,
+//     explode: (),
+//     draw: function() {
+//         this.sprite.draw(canvas, this.x, this.y);
+//     },
+//
+// }
 
 var shore = {
     sprite: Sprite("shore"),
@@ -576,73 +571,23 @@ function handleCollisions() {
 
     //console.log(player.velX);
 
-    if (collides(topleftQuad, player)) {
-        //enemy.explode();
-        //  player.lifeChange(-10);
-        //  player.friction = player.friction + .01;
-        //  player.velX++;
-        //  if (Math.abs(player.velY) <= velocityCap) {
-        if (player.velX < 3) {
-            player.velX += WaveForce;
-        } else {
-            player.velX = WaveForce;
-        }
-        //  player.y += WavePull;
-        //  debugger;
-        //  }
-    }
-    if (collides(topRightQuad, player)) {
 
 
-        //  player.velY++;
-        //  if (Math.abs(player.velY) <= velocityCap) {
-        if (player.velY < 3) {
-
-            player.velY += WaveForce;
-        } else {
-            player.velY = WaveForce;
-        }
-
-
-        //  player.velX -= WavePull;
-        //  }
-
-    }
-    if (collides(botRightQuad, player)) {
-
-
-        //  player.velX--;
-        //if (Math.abs(player.velY) <= velocityCap) {
-        if (player.velX > 3) {
-            player.velX -= WaveForce;
-        } else {
-            player.velX = -WaveForce;
-        }
-
-
-        //  player.velY -= WavePull;
-        //  }
-
-    }
-    if (collides(botleftQuad, player)) {
-
-
-        //          player.velY--;
-        //    if (Math.abs(player.velY) <= velocityCap) {
-        if (player.velY > 3) {
-            player.velY -= WaveForce;
-        } else {
-            player.velY = -WaveForce;
-        }
-
-        //  player.velX += WavePull;
-        //  }
-    }
-
-
+    		//PowerUp Collision
+    		powerups.forEach(function(powerup) {
+    				if (collides(powerup, player)) {
+    						powerup.explode();
+                player.tempPoints = player.tempPoints + 1;
+    						  //player.lifeChange(30);
+    				}
+    		});
 
     if(collides(shore, player)){
 
+      console.log(player.tempPoints);
+      player.points = player.points + player.tempPoints;
+      player.tempPoints = 0;
+      console.log("Dropping off the kids at the pool");
     //player.points += player.tempPoints;
   //  pickup.explode();
 
@@ -809,7 +754,7 @@ function update() { //Updates location and reaction of objects to the canvas
         player.x += velX + centerVelX;
         player.y += velY + centerVelY;
 
-        player.x = player.x.clamp(0 + shore.width + player.width, CANVAS_WIDTH - player.width); //prevents character from going past canvas
+        player.x = player.x.clamp(0 + shore.width + player.width - 200, CANVAS_WIDTH - player.width); //prevents character from going past canvas
 
 
         player.y = player.y.clamp(0, CANVAS_HEIGHT - player.height); //prevents character from going past canvas
@@ -823,7 +768,7 @@ function update() { //Updates location and reaction of objects to the canvas
         // Increase the pull towards the center
         centerPull += CENTER_PULL_INCREMENT;
         centerPull = centerPull.clamp(0, MAX_PULL);
-        console.log(centerPull);
+      //  console.log(centerPull);
 
         if (keydown.h) {
           horn_sound.play();
@@ -832,6 +777,18 @@ function update() { //Updates location and reaction of objects to the canvas
 
         //Player actions
 
+        //Powerup Update logic
+      				powerups.forEach(function(powerup){
+      					powerup.update();
+      				});
+
+      				powerups = powerups.filter(function(powerup) {
+      						return powerup.active;
+      				});
+
+      				if (Math.random() < 0.01) {
+      						powerups.push(Powerup());
+      				}
 
         //Enemy Update logic
 
@@ -910,6 +867,10 @@ function draw() { //Draws objects to the canvas
 
 
 
+        				//PowerUp Draw
+        				powerups.forEach(function(powerup) {
+        						powerup.draw();
+        				});
         //whirlpool Draw
 
         whirlpool.draw();
@@ -919,7 +880,7 @@ function draw() { //Draws objects to the canvas
         //botRightQuad.draw();
         //playerdraw
         player.draw();
-        peoplePickup.draw();
+        //peoplePickup.draw();
         //  console.log(player.y);
 
         //Life Bar top is pink static background
