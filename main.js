@@ -363,13 +363,13 @@ function Powerup(P) {
     P = P || {};
 
     P.active = true;
-    P.age = Math.floor(Math.random() * 128);
+    P.age = Math.floor(Math.random() * 500);
 
     P.sprite = Sprite("Sprite_32px");
     // P.color = "#A2B";
 
-    P.x = CANVAS_WIDTH / 4 + Math.random() * CANVAS_WIDTH / 2;
-    P.y = 0;
+    P.x =  Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000,
+    P.y = Math.floor(Math.random() * (1080 - 0 + 1)) + 0,
     P.xVelocity = 0
     P.yVelocity = 2;
 
@@ -394,10 +394,10 @@ function Powerup(P) {
     };
 
     P.update = function() {
-        P.x += P.xVelocity;
-        P.y += P.yVelocity;
-
-        P.xVelocity = 3 * Math.sin(P.age * Math.PI / 64);
+        // P.x += P.xVelocity;
+        // P.y += P.yVelocity;
+        //
+        // P.xVelocity = 3 * Math.sin(P.age * Math.PI / 64);
 
         P.age++;
 
