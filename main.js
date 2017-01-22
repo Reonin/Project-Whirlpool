@@ -715,7 +715,7 @@ function update() { //Updates location and reaction of objects to the canvas
         var gamepads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads : []);
 
         // If there's a gamepad available
-        if (gamepads) {
+        if (gamepads[0] !== null) {
           // Add wheel angle to boat angle
           // Axes range from -1 to 1
           // TURNING_RADIUS slows down your turning speed
