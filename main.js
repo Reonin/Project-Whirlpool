@@ -243,8 +243,8 @@ var endTextY = CANVAS_HEIGHT;
 
 //Sound creation
 var GameLoopMusic_sound = new Howl({
-    urls: ['sounds/In-Orbit.mp3'],
-    autoplay: false,
+    urls: ['sounds/ggj16mainloop.wav'],
+    autoplay: true,
     loop: true,
 });
 var explosion_sound = new Howl({
@@ -259,6 +259,8 @@ var horn_sound = new Howl({
     urls: ['sounds/horn.mp3', 'sounds/horn.wav'],
     volume: 0.3
 });
+
+
 
 //explosion_sound.play();
 
@@ -363,7 +365,7 @@ var player = {
         var speedPercent = currVolume / peakVolume;
         var frameIndex = Math.floor(this.sprites.length * speedPercent);
         frameIndex = frameIndex.clamp(0, this.sprites.length - 1);
-        
+
         // Draw the boat
         this.sprites[frameIndex].draw(canvas, -(this.width / 2), -(this.height / 2));
 
@@ -371,7 +373,7 @@ var player = {
 
         // Rotate so people are "standing" in the ship
         canvas.rotate(Math.PI / 2);
-        
+
         for (var i = 0; i < this.tempPoints; i++) {
           var personIndex = i % 4;
           var rowIndex = Math.floor(i / 4);
@@ -1036,7 +1038,7 @@ function update() { //Updates location and reaction of objects to the canvas
           player.reset();
           centerPull = INIT_CENTER_PULL;
         }
-        
+
     }
 
 
