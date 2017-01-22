@@ -269,10 +269,9 @@ var ui_sound = new Howl({
     volume: 0.5
 });
 
-
 var horn_sound = new Howl({
-    urls: ['sounds/horn.mp3', 'sounds/horn.wav'],
-    volume: 0.3
+    urls: ['sounds/horn.wav'],
+    volume: 0.7
 });
 
 var endScreenImg = new Image();
@@ -315,6 +314,10 @@ var player = {
           // Axes range from -1 to 1
           // TURNING_RADIUS slows down your turning speed
           this.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
+
+          if (gamepads[0].buttons[6].pressed || gamepads[0].buttons[7].pressed) {
+              horn_sound.play();
+          }
       }
 
       // If the current noise is louder than the background noise
@@ -337,13 +340,6 @@ var player = {
 
       if (keydown.up) {
           this.speed = this.keyboardThrust;
-      }
-
-      if (keydown.h) {
-          horn_sound.play();
-      }
-      if(keydown.r) {
-          currentState == states.title;
       }
 
       // Calculate distance to center
@@ -471,8 +467,7 @@ var centerPull = INIT_CENTER_PULL;
 var TURNING_RADIUS = 100;
 var CENTER_PULL_INCREMENT = 0.001;
 var MAX_PULL = 4;
-var FWD_THROTTLE = 10;
-
+var FWD_THROTTLE = 5;
 
 //var TO_RADIANS = Math.PI/180;
 var ang = 0;
@@ -821,17 +816,22 @@ function handleCollisions() {
         currentState = states.End;
     }
 
-    if (player.tempPoints < MAX_PICKUP) {
-      //PowerUp Collision
-      powerups.forEach(function(powerup) {
-          if (collides(powerup, player)) {
-              powerup.explode();
-              player.tempPoints = player.tempPoints + 1;
-              pickup_sound.play();
-              //player.lifeChange(30);
-          }
-      });
-    }
+    //PowerUp Collision
+    powerups.forEach(function(powerup) {
+        if (player.tempPoints < MAX_PICKUP) {
+            if (collides(powerup, player)) {
+                powerup.explode();
+                player.tempPoints = player.tempPoints + 1;
+                pickup_sound.play();
+                //player.lifeChange(30);
+            }
+        }
+
+        if (Math.abs(powerup.x - WATER_CENTER_X) < 50 && Math.abs(powerup.y - WATER_CENTER_Y) < 50) {
+          powerup.explode();
+        }
+        
+    });
 
     if (player.tempPoints > 0) {
       if (collides(shore, player)) {
@@ -950,7 +950,9 @@ var shoreGuys = {
     y: 150,
     draw: function(points) {
       for (var i = 0; i < points; i++) {
-        this.sprite.draw(canvas, 10, 150 + 45*i);
+        var guyCol = Math.floor(i / 20);
+
+        this.sprite.draw(canvas, 10 + (30 * guyCol), 150 + 45 * (i % 20));
       }
 
     },
@@ -1055,7 +1057,7 @@ function update() { //Updates location and reaction of objects to the canvas
         endTextY = endTextY.clamp(300, CANVAS_HEIGHT);
 
         if (keydown.r) {
-            currentState = states.Game;
+            currentState = states.title;
             player.reset();
             centerPull = INIT_CENTER_PULL;
             ui_sound.play();
