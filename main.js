@@ -505,7 +505,7 @@ function Powerup(P) {
         var centerAngle = Math.atan2(dy, dx);
 
         // Calculate velocity towards center
-        // centerPull determines strength of pull
+        // centerPull determines strength of pull, /4 so it's not as strong as player
         var centerVelX = Math.cos(centerAngle) * (centerPull / 4);
         var centerVelY = Math.sin(centerAngle) * (centerPull / 4);
 
@@ -613,6 +613,7 @@ var shore = {
 
 }
 
+// Calculated here so the shore object exists already (yuck)
 var WATER_CENTER_X = shore.width + ((CANVAS_WIDTH - shore.width) / 2);
 var WATER_CENTER_Y = CANVAS_HEIGHT / 2;
 
