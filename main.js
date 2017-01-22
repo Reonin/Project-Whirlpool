@@ -262,11 +262,14 @@ var horn_sound = new Howl({
 //explosion_sound.play();
 
 //Create The player
+
+var INIT_X = 350;
+var INIT_Y = 50;
 var player = {
     // color: "#00A",
     sprite: Sprite("Top_View"),
-    x: 350,
-    y: 50,
+    x: INIT_X,
+    y: INIT_Y,
     width: 173,
     height: 88,
     life: 100,
@@ -343,6 +346,15 @@ var TURNING_RADIUS = 100;
 var CENTER_PULL_INCREMENT = 0.001;
 var MAX_PULL = 4;
 var FWD_THROTTLE = 10;
+
+function resetPlayer() {
+  player.x = INIT_X;
+  player.y = INIT_Y;
+  player.angle = 0;
+  player.speed = 0;
+  player.points = 0;
+  player.tempPoints = 0;
+}
 
 
 //var TO_RADIANS = Math.PI/180;
@@ -967,6 +979,11 @@ function update() { //Updates location and reaction of objects to the canvas
 
         endTextY = endTextY.clamp(300, CANVAS_HEIGHT);
 
+        if (keydown.r) {
+          currentState = states.Game;
+          resetPlayer();
+        }
+        
     }
 
 
