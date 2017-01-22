@@ -264,11 +264,11 @@ var horn_sound = new Howl({
 //Create The player
 var player = {
     // color: "#00A",
-    sprite: Sprite("spaceship"),
+    sprite: Sprite("Top_View"),
     x: 50,
     y: 50,
-    width: 32,
-    height: 32,
+    width: 173,
+    height: 88,
     life: 100,
     angle: 0, // In Radians: 0 is right, -1.57 up, 1.57 down, -+3.14 left
     speed: 0,
