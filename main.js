@@ -826,6 +826,11 @@ function handleCollisions() {
                 //player.lifeChange(30);
             }
         }
+
+        if (Math.abs(powerup.x - WATER_CENTER_X) < 50 && Math.abs(powerup.y - WATER_CENTER_Y) < 50) {
+          powerup.explode();
+        }
+        
     });
 
     if (player.tempPoints > 0) {
