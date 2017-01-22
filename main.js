@@ -1,14 +1,14 @@
 if (!window.AudioContext) {
-  if (!window.webkitAudioContext) {
-    alert('no audiocontext found');
-  }
-  window.AudioContext = window.webkitAudioContext;
+    if (!window.webkitAudioContext) {
+        alert('no audiocontext found');
+    }
+    window.AudioContext = window.webkitAudioContext;
 }
 
 /* Mic Vars */
 var audioContext = new AudioContext();
 
-var BUFF_SIZE = 2048; 
+var BUFF_SIZE = 2048;
 
 var isMicInit = false;
 var isVolumeCalibrated = false;
@@ -23,68 +23,70 @@ var calibrationArr = [];
 
 // Normalize API call
 if (!navigator.getUserMedia) {
-  navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+    navigator.getUserMedia = navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 }
 
 // Request mic access
-navigator.getUserMedia({ audio: true }, function(stream) {
-  micData.mediaStream = stream;
+navigator.getUserMedia({
+    audio: true
+}, function(stream) {
+    micData.mediaStream = stream;
 
-  micData.micStream = audioContext.createMediaStreamSource(micData.mediaStream);
+    micData.micStream = audioContext.createMediaStreamSource(micData.mediaStream);
 
-  micData.scriptProcessor = audioContext.createScriptProcessor(BUFF_SIZE, 1, 1);
+    micData.scriptProcessor = audioContext.createScriptProcessor(BUFF_SIZE, 1, 1);
 
-  micData.scriptProcessor.connect(audioContext.destination);
+    micData.scriptProcessor.connect(audioContext.destination);
 
-  analyser = audioContext.createAnalyser();
-  analyser.smoothingTimeConstant = 0.3;
-  analyser.fftSize = BUFF_SIZE / 2;
+    analyser = audioContext.createAnalyser();
+    analyser.smoothingTimeConstant = 0.3;
+    analyser.fftSize = BUFF_SIZE / 2;
 
-  micData.micStream.connect(analyser);
+    micData.micStream.connect(analyser);
 
-  // Connect to the processor
-  micData.micStream.connect(micData.scriptProcessor);
+    // Connect to the processor
+    micData.micStream.connect(micData.scriptProcessor);
 
-  // Connect to the output
-  // micData.micStream.connect(audioContext.destination);
+    // Connect to the output
+    // micData.micStream.connect(audioContext.destination);
 
-  isMicInit = true;
+    isMicInit = true;
 }, onError);
 
 function getMicInput() {
-  if (isMicInit) {
-    // Get mic volume across all frequencies
-    analyser.getByteFrequencyData(freqArray);
+    if (isMicInit) {
+        // Get mic volume across all frequencies
+        analyser.getByteFrequencyData(freqArray);
 
-    // Average it out
-    var averageVolume = (freqArray.reduce(function(a, b) {
-      return a + b;
-    }) / freqArray.length);
+        // Average it out
+        var averageVolume = (freqArray.reduce(function(a, b) {
+            return a + b;
+        }) / freqArray.length);
 
-    console.log(averageVolume);
+        console.log(averageVolume);
 
-    // If we calibrated the background noise volume
-    if (isVolumeCalibrated) {
-      currVolume = averageVolume;
-    } else { // Calibrate volume
-      // Push this volume to the calibration array
-      calibrationArr.push(averageVolume);
+        // If we calibrated the background noise volume
+        if (isVolumeCalibrated) {
+            currVolume = averageVolume;
+        } else { // Calibrate volume
+            // Push this volume to the calibration array
+            calibrationArr.push(averageVolume);
 
-      // If we've collected enough data
-      if (calibrationArr.length >= CALIBRATION_FRAMES) {
-        isVolumeCalibrated = true;
+            // If we've collected enough data
+            if (calibrationArr.length >= CALIBRATION_FRAMES) {
+                isVolumeCalibrated = true;
 
-        // Sum and average the volume
-        ambientVolume = (calibrationArr.reduce(function(a, b) {
-          return a + b;
-        }) / calibrationArr.length);
-      }
+                // Sum and average the volume
+                ambientVolume = (calibrationArr.reduce(function(a, b) {
+                    return a + b;
+                }) / calibrationArr.length);
+            }
+        }
     }
-  }
 }
 
 function onError(e) {
-  console.log(e);
+    console.log(e);
 }
 
 //Generate the Canvas
@@ -268,18 +270,18 @@ var player = {
     keyboardThrust: 5,
     keyboardTurnSpeed: 0.05,
     draw: function() {
-      // Translate the canvas to the back center of the boat 
-      canvas.translate(this.x, this.y + (this.height / 2));
-      // Rotate the canvas so the boat draws turned
-      canvas.rotate(this.angle);
+        // Translate the canvas to the back center of the boat
+        canvas.translate(this.x, this.y + (this.height / 2));
+        // Rotate the canvas so the boat draws turned
+        canvas.rotate(this.angle);
 
-      // Draw the boat
-      this.sprite.draw(canvas, 0, -(this.height / 2));
+        // Draw the boat
+        this.sprite.draw(canvas, 0, -(this.height / 2));
 
-      // Reset the canvas to pre-rotated
-      canvas.rotate(-this.angle);
-      canvas.translate(-this.x, -(this.y + (this.height / 2)));
-      
+        // Reset the canvas to pre-rotated
+        canvas.rotate(-this.angle);
+        canvas.translate(-this.x, -(this.y + (this.height / 2)));
+
     },
     shoot: function() {
         var bulletPosition = this.midpoint();
@@ -325,7 +327,9 @@ var player = {
         return this.life;
 
 
-    }
+    },
+    points: 0,
+    tempPoints: 0,
 };
 
 var TURNING_RADIUS = 100;
@@ -400,6 +404,20 @@ var botRightQuad = {
     },
 
 }
+
+
+var shore = {
+    sprite: Sprite("shore"),
+    width: 1920,
+    height: 180,
+    x: 0,
+    y: 900,
+    draw: function() {
+        this.sprite.draw(canvas, this.x, this.y);
+    },
+
+}
+
 
 function collisionDetection() {
 
@@ -545,33 +563,31 @@ function handleCollisions() {
         //  player.lifeChange(-10);
         //  player.friction = player.friction + .01;
         //  player.velX++;
-      //  if (Math.abs(player.velY) <= velocityCap) {
-        if(player.velX <  3){
+        //  if (Math.abs(player.velY) <= velocityCap) {
+        if (player.velX < 3) {
             player.velX += WaveForce;
+        } else {
+            player.velX = WaveForce;
         }
-          else{
-              player.velX = WaveForce;
-          }
-          //  player.y += WavePull;
+        //  player.y += WavePull;
         //  debugger;
-      //  }
+        //  }
     }
     if (collides(topRightQuad, player)) {
 
 
         //  player.velY++;
-      //  if (Math.abs(player.velY) <= velocityCap) {
-      if(player.velY < 3){
+        //  if (Math.abs(player.velY) <= velocityCap) {
+        if (player.velY < 3) {
 
-          player.velY += WaveForce ;
-      }
-      else {
-        player.velY = WaveForce ;
-      }
+            player.velY += WaveForce;
+        } else {
+            player.velY = WaveForce;
+        }
 
 
-          //  player.velX -= WavePull;
-      //  }
+        //  player.velX -= WavePull;
+        //  }
 
     }
     if (collides(botRightQuad, player)) {
@@ -579,32 +595,30 @@ function handleCollisions() {
 
         //  player.velX--;
         //if (Math.abs(player.velY) <= velocityCap) {
-        if(  player.velX > 3){
+        if (player.velX > 3) {
             player.velX -= WaveForce;
+        } else {
+            player.velX = -WaveForce;
         }
-else {
-      player.velX = -WaveForce;
-}
 
 
-          //  player.velY -= WavePull;
-      //  }
+        //  player.velY -= WavePull;
+        //  }
 
     }
     if (collides(botleftQuad, player)) {
 
 
         //          player.velY--;
-    //    if (Math.abs(player.velY) <= velocityCap) {
-    if(player.velY >  3){
-      player.velY -= WaveForce;
-    }
-    else{
-      player.velY = -WaveForce;
-    }
+        //    if (Math.abs(player.velY) <= velocityCap) {
+        if (player.velY > 3) {
+            player.velY -= WaveForce;
+        } else {
+            player.velY = -WaveForce;
+        }
 
-          //  player.velX += WavePull;
-      //  }
+        //  player.velX += WavePull;
+        //  }
     }
 
 }
@@ -716,32 +730,33 @@ function update() { //Updates location and reaction of objects to the canvas
 
         // If there's a gamepad available
         if (gamepads[0] !== null) {
-          // Add wheel angle to boat angle
-          // Axes range from -1 to 1
-          // TURNING_RADIUS slows down your turning speed
-          player.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
+            // Add wheel angle to boat angle
+            // Axes range from -1 to 1
+            // TURNING_RADIUS slows down your turning speed
+            player.angle += (gamepads[0].axes[0] * Math.PI) / TURNING_RADIUS;
         }
+
 
         // If the current noise is louder than the background noise
         if (currVolume > ambientVolume) {
-          // Set the new boat speed
-          // FWD_THROTTLE slows down your movement
-          player.speed = currVolume / FWD_THROTTLE;
+            // Set the new boat speed
+            // FWD_THROTTLE slows down your movement
+            player.speed = currVolume / FWD_THROTTLE;
         } else {
-          player.speed = 0;
+            player.speed = 0;
         }
 
         // Keyboard controls for development
         if (keydown.left) {
-          player.angle -= player.keyboardTurnSpeed;
+            player.angle -= player.keyboardTurnSpeed;
         }
 
         if (keydown.right) {
-          player.angle += player.keyboardTurnSpeed;
+            player.angle += player.keyboardTurnSpeed;
         }
 
         if (keydown.up) {
-          player.speed = player.keyboardThrust;
+            player.speed = player.keyboardThrust;
         }
 
         // Calculate distance to center
