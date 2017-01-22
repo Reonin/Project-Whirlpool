@@ -1162,24 +1162,24 @@ function draw() { //Draws objects to the canvas
         canvas.fillText(GameOVER_TEXT, (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 90);
 
 
-        canvas.fillStyle = "#000"; // Set color to black
+        canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         endTextX = canvas.measureText("Blake Balick-Schreiber").width;
         canvas.fillText("Blake Balick-Schreiber", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY - 45);
 
-        canvas.fillStyle = "#000"; // Set color to black
+        canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         canvas.fillText("Corey Jeffers", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY);
 
-        canvas.fillStyle = "#000"; // Set color to black
+        canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         canvas.fillText("Ryan Giglio", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 45);
 
-        canvas.fillStyle = "#000"; // Set color to black
+        canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         canvas.fillText("Dean Razavi", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 90);
 
-        canvas.fillStyle = "#000"; // Set color to black
+        canvas.fillStyle = "#FFF"; // Set color to black
         canvas.font = '20pt Calibri';
         canvas.fillText("Okwudili Udeh", (CANVAS_WIDTH / 2) - (endTextX / 2), endTextY + 135);
 
