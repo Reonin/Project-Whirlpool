@@ -783,7 +783,7 @@ function update() { //Updates location and reaction of objects to the canvas
         player.x = player.x.clamp(0, CANVAS_WIDTH - player.width); //prevents character from going past canvas
 
 
-        player.y = player.y.clamp(0, CANVAS_HEIGHT - player.height); //prevents character from going past canvas
+        player.y = player.y.clamp(0, CANVAS_HEIGHT - player.height-shore.height); //prevents character from going past canvas
 
 
         //Player actions
