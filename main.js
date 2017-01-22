@@ -468,8 +468,7 @@ var centerPull = INIT_CENTER_PULL;
 var TURNING_RADIUS = 100;
 var CENTER_PULL_INCREMENT = 0.001;
 var MAX_PULL = 4;
-var FWD_THROTTLE = 10;
-
+var FWD_THROTTLE = 5;
 
 //var TO_RADIANS = Math.PI/180;
 var ang = 0;
