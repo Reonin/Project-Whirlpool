@@ -862,7 +862,7 @@ function draw() { //Draws objects to the canvas
 
     if (currentState === states.Game) {
         parallax.Draw(); //draw background
-
+        shore.draw();
 
 
 
