@@ -266,6 +266,9 @@ var horn_sound = new Howl({
 
 var INIT_X = 350;
 var INIT_Y = 50;
+
+var MAX_PICKUP = 8;
+
 var player = {
     // color: "#00A",
     sprites: [
@@ -364,6 +367,23 @@ var player = {
         
         // Draw the boat
         this.sprites[frameIndex].draw(canvas, 0, -(this.height / 2));
+
+        // Draw the rescued people
+
+        // Rotate so people are "standing" in the ship
+        canvas.rotate(Math.PI / 2);
+        
+        for (var i = 0; i < this.tempPoints; i++) {
+          var rowNumber = (Math.floor(i / 4) + 1);
+
+          powerupSprite.draw(canvas,
+              // (left edge - initial offset) + (10px between sprites) + (left position)
+              (-((this.height / 2) * rowNumber) - 5) + (10 * ((i % 4) + 1)) + (powerupSprite.width * i),
+              -(powerupSprite.height * rowNumber)
+          );
+        }
+
+        canvas.rotate(-(Math.PI / 2));
 
         // Reset the canvas to pre-rotated
         canvas.rotate(-this.angle);
@@ -473,13 +493,15 @@ var whirlpool = {
 var powerups = [];
 var wavecrashes = [];
 
+powerupSprite = Sprite("Sprite_32px");
+
 function Powerup(P) {
     P = P || {};
 
     P.active = true;
     P.age = Math.floor(Math.random() * 500);
 
-    P.sprite = Sprite("Sprite_32px");
+    P.sprite = powerupSprite;
     // P.color = "#A2B";
 
     P.x = Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000,
@@ -779,14 +801,16 @@ function handleCollisions() {
         currentState = states.End;
     }
 
-    //PowerUp Collision
-    powerups.forEach(function(powerup) {
-        if (collides(powerup, player)) {
-            powerup.explode();
-            player.tempPoints = player.tempPoints + 1;
-            //player.lifeChange(30);
-        }
-    });
+    if (player.tempPoints < MAX_PICKUP) {
+      //PowerUp Collision
+      powerups.forEach(function(powerup) {
+          if (collides(powerup, player)) {
+              powerup.explode();
+              player.tempPoints = player.tempPoints + 1;
+              //player.lifeChange(30);
+          }
+      });
+    }
 
     if (collides(shore, player)) {
 
